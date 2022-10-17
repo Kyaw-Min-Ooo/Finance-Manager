@@ -17,6 +17,8 @@ class BankAccountTest {
     @Test
     void testConstructor() {
         assertEquals("Alex",testAccount.getAccName());
+        testAccount.setAccName("Lore");
+        assertEquals("Lore",testAccount.getAccName());
         assertEquals(1000,testAccount.getBalance());
         assertEquals(1000,testAccount.getNetBalance());
     }
@@ -75,5 +77,6 @@ class BankAccountTest {
         assertEquals(200,testAccount.getNetBalance());
         testAccount.updateNetBalance(100);
         assertEquals(300,testAccount.getNetBalance());
+        assertEquals(0,testAccount.getMyFinGoals().getSavingAmount());
     }
 }
