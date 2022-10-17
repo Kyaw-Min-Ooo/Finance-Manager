@@ -141,22 +141,12 @@ public class BankApp {
     // Check if this purchase meets the spending limiters
     // If yes
 
-    public int searchItem(String inputName) {
-        for (Purchase itemInList: bank.getMyPurchaseList()) {
-            if (itemInList.itemName().equals(inputName)) {
-                return bank.getMyPurchaseList().indexOf(itemInList);
-            }
-        }
-        return -1;
-    }
-
     public void displayAllPurchases() {
         for (Purchase items: this.bank.getMyPurchaseList()) {
             System.out.println(items.itemName() + " | $" + items.value());
             System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
         }
     }
-
 
 
     public void makePurchase() {
@@ -175,7 +165,7 @@ public class BankApp {
             purchaseList.add(new Purchase(itemName,value));
 
             System.out.println("Purchase successful!");
-            int itemIndex = searchItem(itemName);
+            int itemIndex = bank.searchItem(itemName);
             System.out.println(purchaseList.get(itemIndex).displayTransaction());
             System.out.println(bank.displayBalance());
             System.out.println("Available balance : $" + bank.getNetBalance());

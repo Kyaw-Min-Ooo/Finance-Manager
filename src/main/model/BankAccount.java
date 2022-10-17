@@ -33,7 +33,13 @@ public class BankAccount {
 
     public BankAccount(String name, double balance) {
         this.name = name;
-        this.balance = balance;
+        if (balance <= 0) {
+            this.balance = 0;
+            this.netBalance += 0;
+        } else {
+            this.balance = balance;
+            this.netBalance += balance;
+        }
         this.myPurchaseList = new SpendingTracker(); //Is this good practice?
     }
 
@@ -74,6 +80,15 @@ public class BankAccount {
     public String displayBalance() {
         String balanceStr = String.format("%.2f", balance); // Credit to TellerApp project
         return (name + "'s Balance: $" + balanceStr);
+    }
+
+    public int searchItem(String inputName) {
+        for (Purchase itemInList: this.getMyPurchaseList()) {
+            if (itemInList.itemName().equals(inputName)) {
+                return this.getMyPurchaseList().indexOf(itemInList);
+            }
+        }
+        return -1;
     }
 
 }
