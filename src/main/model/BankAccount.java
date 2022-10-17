@@ -5,20 +5,36 @@ import java.util.ArrayList;
 public class BankAccount {
     private double balance;
     private String name;
+    private double netBalance;
+
+
+    public void setNetBalance(double netBalance) {
+        this.netBalance = netBalance;
+    }
+
+    public void updateNetBalance(double netBalance) {
+        this.netBalance += netBalance;
+    }
+
+    public double getNetBalance() {
+        return this.netBalance;
+    }
 
     //Integrating features into bank account
-    private SpendingTracker mySpendingList;
+    private SpendingTracker myPurchaseList;
+    private FinanceGoals myFinGoals = new FinanceGoals(0);
 
     public BankAccount() {
         this.name = "";
         this.balance = 0;
-        this.mySpendingList = new SpendingTracker(); //Is it good practice?
+        this.netBalance = 0;
+        this.myPurchaseList = new SpendingTracker(); //Is it good practice?
     }
 
     public BankAccount(String name, double balance) {
         this.name = name;
         this.balance = balance;
-        this.mySpendingList = new SpendingTracker(); //Is this good practice?
+        this.myPurchaseList = new SpendingTracker(); //Is this good practice?
     }
 
     public void setBalance(double balance) {
@@ -37,8 +53,12 @@ public class BankAccount {
         return this.name;
     }
 
-    public ArrayList<Purchase> getMySpendingList() {
-        return this.mySpendingList.getSpendingList();
+    public FinanceGoals getMyFinGoals() {
+        return this.myFinGoals;
+    }
+
+    public ArrayList<Purchase> getMyPurchaseList() {
+        return this.myPurchaseList.getSpendingList();
     }
 
     public double deposit(double depositAmount) {

@@ -12,5 +12,4 @@ public class SpendingTracker {
     public ArrayList<Purchase> getSpendingList() {
         return this.spendingList;
     }
-
 }

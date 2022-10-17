@@ -7,11 +7,11 @@ import model.*;
 
 
 //Class credit to the TellerApp application
-public class BankInterface {
+public class BankApp {
     private Scanner input;
     private BankAccount bank;
 
-    public BankInterface() {
+    public BankApp() {
         runBankApp();
     }
 
@@ -35,7 +35,7 @@ public class BankInterface {
             }
         }
 
-        System.out.println("\nGoodbye!");
+        System.out.println("\nThank you for using the Spending Coach program! Until Next Time!");
     }
 
     private void askAccName() {
@@ -54,7 +54,9 @@ public class BankInterface {
         System.out.println("\td -> deposit");
         System.out.println("\tw -> withdraw");
         System.out.println("\tp --> make purchase");
+        System.out.println("\tsg --> set saving goals");
         System.out.println("\ts ->  print all purchases/spending");
+        System.out.println("\tpg ->  print all active financial goals");
         System.out.println("\tq -> quit");
     }
 
@@ -69,10 +71,37 @@ public class BankInterface {
             makePurchase();
         } else if (command.equals("s")) {
             displayAllPurchases();
+        } else if (command.equals("sg")) {
+            activateSavingGoals();
+        }  else if (command.equals("pg")) {
+            displayActiveFinGoals();
         } else {
             System.out.println("Selection not valid...");
         }
     }
+
+    public void activateSavingGoals() {
+        System.out.println("How much money do you want to save this month?");
+        double savingsAmount = input.nextDouble();
+
+        Boolean validSavings = bank.getBalance() > savingsAmount;
+
+        if (validSavings && bank.getBalance() != 0) {
+            bank.getMyFinGoals().setSavingAmount(savingsAmount);
+            bank.setNetBalance(bank.getBalance() - bank.getMyFinGoals().getSavingAmount());
+            System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
+        }
+    }
+
+    public void displayActiveFinGoals() {
+        if (bank.getMyFinGoals().getSavingAmount() != 0) {
+            System.out.println("Available balance : $" + bank.getNetBalance());
+            System.out.println("Saving goal amount: $" + bank.getMyFinGoals().getSavingAmount());
+        } else {
+            System.out.println("There are currently no active saving goals.");
+        }
+    }
+
 
     //Used from TellerApp project
     private void doDeposit() {
@@ -81,10 +110,12 @@ public class BankInterface {
 
         if (amount >= 0.0) {
             bank.deposit(amount);
+            bank.updateNetBalance(amount);
         } else {
             System.out.println("Cannot deposit negative amount...\n");
         }
         System.out.println(bank.displayBalance());
+        System.out.println("Available balance : $" + bank.getNetBalance());
     }
 
     private void doWithdrawal() {
@@ -97,8 +128,10 @@ public class BankInterface {
             System.out.println("Insufficient balance on account...\n");
         } else {
             bank.withdraw(amount);
+            bank.updateNetBalance(-1 * amount);
         }
         System.out.println(bank.displayBalance());
+        System.out.println("Available balance : $" + bank.getNetBalance());
     }
 
     // Check if you have enough balance
@@ -109,36 +142,44 @@ public class BankInterface {
     // If yes
 
     public int searchItem(String inputName) {
-        for (Purchase itemInList: bank.getMySpendingList()) {
+        for (Purchase itemInList: bank.getMyPurchaseList()) {
             if (itemInList.itemName().equals(inputName)) {
-                return bank.getMySpendingList().indexOf(itemInList);
+                return bank.getMyPurchaseList().indexOf(itemInList);
             }
         }
         return -1;
     }
 
     public void displayAllPurchases() {
-        for (Purchase items: this.bank.getMySpendingList()) {
+        for (Purchase items: this.bank.getMyPurchaseList()) {
             System.out.println(items.itemName() + " | $" + items.value());
+            System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
         }
     }
 
 
-    public void makePurchase() {
-        ArrayList<Purchase> spendingList = bank.getMySpendingList();
 
-        input = new Scanner(System.in);
+    public void makePurchase() {
+        ArrayList<Purchase> purchaseList = bank.getMyPurchaseList();
+        String itemName;
         System.out.println("What is the name of the item/transaction?");
-        String itemName = input.nextLine();
+        itemName = input.next();
         System.out.println("How much is this item?");
         double value = input.nextDouble();
 
-        bank.withdraw(value);
-        spendingList.add(new Purchase(itemName,value));
+        if (value > bank.getNetBalance()) {
+            System.out.println("Not enough balance! Purchase goes against saving quota!");
+        } else {
+            bank.withdraw(value);
+            bank.updateNetBalance(-1 * value);
+            purchaseList.add(new Purchase(itemName,value));
 
-        System.out.println("Purchase successful!");
-        int itemIndex = searchItem(itemName);
-        System.out.println(spendingList.get(itemIndex).displayTransaction());
-        System.out.println(bank.displayBalance());
+            System.out.println("Purchase successful!");
+            int itemIndex = searchItem(itemName);
+            System.out.println(purchaseList.get(itemIndex).displayTransaction());
+            System.out.println(bank.displayBalance());
+            System.out.println("Available balance : $" + bank.getNetBalance());
+            System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
+        }
     }
 }
