@@ -11,6 +11,7 @@ class BankAccountTest {
     @BeforeEach
     void runBefore() {
         testAccount = new BankAccount("Alex",1000);
+        testAccount.getMyPurchaseList().add(new Purchase("Amazon",300));
     }
 
     @Test
@@ -57,5 +58,13 @@ class BankAccountTest {
     @Test
     void testDisplayBalance() {
         assertTrue(testAccount.displayBalance().contains("Alex" + "'s Balance: $" + "1000"));
+    }
+
+    @Test
+    void testSearchItem() {
+        testAccount.setBalance(200);
+        assertEquals(200,testAccount.getBalance());
+        assertEquals(0,testAccount.searchItem("Amazon"));
+        assertEquals(-1,testAccount.searchItem("Walmart"));
     }
 }
