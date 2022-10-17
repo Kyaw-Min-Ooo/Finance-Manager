@@ -40,7 +40,7 @@ public class BankApp {
 
     private void askAccName() {
         System.out.println("What is your name?");
-        bank.setName(input.nextLine());
+        bank.setAccName(input.nextLine());
     }
 
     private void init() {
@@ -164,11 +164,11 @@ public class BankApp {
             bank.updateNetBalance(-1 * value);
             purchaseList.add(new Purchase(itemName,value));
 
-            System.out.println("Purchase successful!");
+            System.out.println("Purchase successful!\n");
             int itemIndex = bank.searchItem(itemName);
             System.out.println(purchaseList.get(itemIndex).displayTransaction());
             System.out.println(bank.displayBalance());
-            System.out.println("Available balance : $" + bank.getNetBalance());
+            System.out.println("\nSpendable balance : $" + bank.getNetBalance());
             System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
         }
     }

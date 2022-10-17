@@ -67,4 +67,13 @@ class BankAccountTest {
         assertEquals(0,testAccount.searchItem("Amazon"));
         assertEquals(-1,testAccount.searchItem("Walmart"));
     }
+
+    @Test
+    void testNetBalanceMethods() {
+        testAccount = new BankAccount();
+        testAccount.setNetBalance(200);
+        assertEquals(200,testAccount.getNetBalance());
+        testAccount.updateNetBalance(100);
+        assertEquals(300,testAccount.getNetBalance());
+    }
 }

@@ -2,27 +2,31 @@ package model;
 
 import java.util.ArrayList;
 
+// This BankAccount class stores the user's name, balance and net balance (calculated with regards to saving goals).
+// It also contains a list of purchases made from the acoount's balance.
 public class BankAccount {
     private double balance;
     private String name;
     private double netBalance;
+
+    //Integrating features into bank account
+    private SpendingTracker myPurchaseList;
+    private FinanceGoals myFinGoals = new FinanceGoals(0);
 
 
     public void setNetBalance(double netBalance) {
         this.netBalance = netBalance;
     }
 
-    public void updateNetBalance(double netBalance) {
-        this.netBalance += netBalance;
-    }
-
     public double getNetBalance() {
         return this.netBalance;
     }
 
-    //Integrating features into bank account
-    private SpendingTracker myPurchaseList;
-    private FinanceGoals myFinGoals = new FinanceGoals(0);
+
+    public void updateNetBalance(double netBalance) {
+        this.netBalance += netBalance;
+    }
+
 
     public BankAccount() {
         this.name = "";
@@ -47,7 +51,7 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public void setName(String name) {
+    public void setAccName(String name) {
         this.name = name;
     }
 
