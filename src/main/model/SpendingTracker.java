@@ -6,7 +6,7 @@ import java.util.ArrayList;
 // perform statistical analysis to help user understand their spending pattern.
 public class SpendingTracker {
     private ArrayList<Purchase> spendingList;
-    private double totalSpendings;
+    private double totalSpending;
     private int maxPurchaseIndex;
 
     SpendingTracker() {
@@ -22,13 +22,13 @@ public class SpendingTracker {
     }
 
     //Effects: Returns the total spending of the spending list
-    public double getTotalSpendings() {
+    public double getTotalSpending() {
         double totalSpending = 0;
         for (Purchase purchase: this.spendingList) {
             totalSpending += purchase.value();
         }
-        this.totalSpendings = totalSpending;
-        return totalSpendings;
+        this.totalSpending = totalSpending;
+        return totalSpending;
     }
 
     //Modifies: this
@@ -43,6 +43,17 @@ public class SpendingTracker {
 
         this.maxPurchaseIndex = maxPurchase;
         return this.spendingList.get(maxPurchase).value();
+    }
+
+    //Effects: Takes an input String and search through this.mySpendingTracker for an item with matching name.
+    // returns the first stance of the item. Does not account for repeating name.
+    public int searchItem(String inputName) {
+        for (Purchase itemInList: this.spendingList) {
+            if (itemInList.itemName().equals(inputName)) {
+                return this.spendingList.indexOf(itemInList);
+            }
+        }
+        return -1;
     }
 
 

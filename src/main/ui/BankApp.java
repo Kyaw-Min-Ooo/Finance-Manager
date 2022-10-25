@@ -5,7 +5,7 @@ import model.BankAccount;
 import model.*;
 
 //Class credit to the TellerApp application
-// This class serve as an application interface for operating different features included in the user storeiss
+// This class serve as an application interface for operating different features included in the user stories
 public class BankApp {
     private Scanner input;
     private BankAccount bank;
@@ -41,7 +41,7 @@ public class BankApp {
 
     //Requires: non-zero length String
     //Modifies: this
-    //Effects: Get username from keyboard and store in bank user name
+    //Effects: Get username from keyboard and store in bank username
     private void askAccName() {
         System.out.println("What is your name?");
         bank.setAccName(input.nextLine());
@@ -55,7 +55,7 @@ public class BankApp {
         input.useDelimiter("\n");
     }
 
-    //Effects: Displays the menu of the appication to the user
+    //Effects: Displays the menu of the application to the user
     public void displayMenu() {
         System.out.println("--------------------------");
         System.out.println(this.bank.getAccName() + "'s Bank Options");
@@ -140,6 +140,9 @@ public class BankApp {
             bank.setNetBalance(bank.getBalance() - bank.getMyFinGoals().getSavingAmount());
             bank.getMyFinGoals().setIsSaving(true);
             displayOverallBalance();
+        } else {
+            System.out.println("Invalid saving input! Please try again");
+            updateSavingGoals();
         }
     }
 
@@ -162,9 +165,9 @@ public class BankApp {
         System.out.println("How much is this item?");
         double value = input.nextDouble();
 
-        if (value > bank.getBalance()) {
+        if (bank.getNetBalance() < value || bank.getNetBalance() < value) {
             System.out.println("Not enough balance!");
-            if (value > bank.getNetBalance() && bank.getMyFinGoals().getIsSaving()) {
+            if (bank.getNetBalance() < value && bank.getMyFinGoals().getIsSaving()) {
                 System.out.println("Purchase goes against saving quota!");
             }
         } else {
@@ -173,7 +176,7 @@ public class BankApp {
             bank.getMyPurchaseList().add(new Purchase(itemName,value));
 
             System.out.println("Purchase successful!");
-            int itemIndex = bank.searchItem(itemName);
+            int itemIndex = bank.getMySpendingTracker().searchItem(itemName);
             System.out.println(bank.getMyPurchaseList().get(itemIndex).displayTransaction());
             displayOverallBalance(); // Overall Display
         }
@@ -190,14 +193,17 @@ public class BankApp {
         }
     }
 
-    // Print item with highest spending and sum of total spending list's value
+    // Print item with the highest spending, sum of total spending list's value, visualize based on spending amount
     public void performStats() {
+        bank.getMySpendingTracker().calculateMaxSpending();
         System.out.println("Item with highest spending: ");
-        System.out.println(bank.getMyPurchaseList().get(bank.getMySpendingTracker().getMaxPurchaseIndex()).itemName()
-                + " | $" + bank.getMyPurchaseList().get(bank.getMySpendingTracker().getMaxPurchaseIndex()).value());
+        int highestIndex = bank.getMySpendingTracker().getMaxPurchaseIndex();
+        System.out.println(bank.getMyPurchaseList().get(highestIndex).itemName()
+                + " | $" + bank.getMyPurchaseList().get(highestIndex).value());
 
-        System.out.println("Total amount of all items spent: $" + bank.getMySpendingTracker().getTotalSpendings());
+        System.out.println("Total amount of all items spent: $" + bank.getMySpendingTracker().getTotalSpending());
 
+        //Visualise data
         int multiplier;
         for (Purchase item: this.bank.getMyPurchaseList()) {
             multiplier = 0;
@@ -207,6 +213,7 @@ public class BankApp {
             for (int i = 0; i < multiplier; i++) {
                 histogram += "#";
             }
+            histogram = (multiplier < 1) ? "#" : histogram; // In case iem costs lower than 5 bucks
             System.out.println(histogram);
         }
     }

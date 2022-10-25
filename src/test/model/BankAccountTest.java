@@ -66,8 +66,8 @@ class BankAccountTest {
     void testSearchItem() {
         testAccount.setBalance(200);
         assertEquals(200,testAccount.getBalance());
-        assertEquals(0,testAccount.searchItem("Amazon"));
-        assertEquals(-1,testAccount.searchItem("Walmart"));
+        assertEquals(0,testAccount.getMySpendingTracker().searchItem("Amazon"));
+        assertEquals(-1,testAccount.getMySpendingTracker().searchItem("Walmart"));
     }
 
     @Test

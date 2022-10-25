@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-// This BankAccount class stores the user's name, balance and net balance (calculated with regards to saving goals).
+// This BankAccount class stores the user's name, balance and net balance (calculated with regard to saving goals).
 // It also contains a list of purchases made from the account's balance.
 public class BankAccount {
     private double balance;
@@ -22,7 +22,7 @@ public class BankAccount {
 
     //Requires: name has non-zero length
     //Modifies: this
-    //Effects: Checks if balance is zero under if yes, then set baalnce to zero otherwise, add the balance amount into
+    //Effects: Checks if balance is zero under if yes, then set balance to zero otherwise, add the balance amount into
     // this.balance
     public BankAccount(String name, double balance) {
         this.name = name;
@@ -90,7 +90,7 @@ public class BankAccount {
 
     //Requires: non-negative double amount
     //Modifies: this
-    //Effects: Subtract the amount of purchase from account's balanace
+    //Effects: Subtract the amount of purchase from account's balance
     public double withdraw(double withdrawAmount) {
         this.balance -= withdrawAmount;
         return this.balance; // returns the balance instead of amount withdrawn
@@ -103,16 +103,5 @@ public class BankAccount {
         return (name + "'s Balance: $" + balanceStr);
     }
 
-
-    //Effects: Takes an input String and search through this.mySpendingTracker for an item with matching name.
-    // returns the first stance of the item. Does not account for repeating name.
-    public int searchItem(String inputName) {
-        for (Purchase itemInList: this.getMyPurchaseList()) {
-            if (itemInList.itemName().equals(inputName)) {
-                return this.getMyPurchaseList().indexOf(itemInList);
-            }
-        }
-        return -1;
-    }
 
 }
