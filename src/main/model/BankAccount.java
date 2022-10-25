@@ -10,17 +10,17 @@ public class BankAccount {
     private double netBalance;
 
     //Integrating Spending Tracking and Saving Goals features into user bank account
-    private SpendingTracker myPurchaseList;
-    private FinanceGoals myFinGoals = new FinanceGoals(0);
+    private SpendingTracker mySpendingTracker;
+    private FinanceGoals myFinGoals = new FinanceGoals();
 
     public BankAccount() {
         this.name = "";
         this.balance = 0;
         this.netBalance = 0;
-        this.myPurchaseList = new SpendingTracker(); //Is it good practice?
+        this.mySpendingTracker = new SpendingTracker(); //Is it good practice?
     }
 
-    //Requires: name has non zero length
+    //Requires: name has non-zero length
     //Modifies: this
     //Effects: Checks if balance is zero under if yes, then set baalnce to zero otherwise, add the balance amount into
     // this.balance
@@ -33,7 +33,7 @@ public class BankAccount {
             this.balance = balance;
             this.netBalance += balance;
         }
-        this.myPurchaseList = new SpendingTracker(); //Is this good practice?
+        this.mySpendingTracker = new SpendingTracker(); //Is this good practice?
     }
 
     public void setNetBalance(double netBalance) {
@@ -44,7 +44,7 @@ public class BankAccount {
         return this.netBalance;
     }
 
-    //Requires: non negative double
+    //Requires: non-negative double
     //Modifies: this
     //Effects: Increase or decrease the net balance due to deposit or withdrawal
     public void updateNetBalance(double amount) {
@@ -55,12 +55,12 @@ public class BankAccount {
         this.balance = balance;
     }
 
-    public void setAccName(String name) {
-        this.name = name;
-    }
-
     public double getBalance() {
         return this.balance;
+    }
+
+    public void setAccName(String name) {
+        this.name = name;
     }
 
     public String getAccName() {
@@ -72,8 +72,12 @@ public class BankAccount {
         return this.myFinGoals;
     }
 
+    public SpendingTracker getMySpendingTracker() {
+        return this.mySpendingTracker;
+    }
+
     public ArrayList<Purchase> getMyPurchaseList() {
-        return this.myPurchaseList.getSpendingList();
+        return this.mySpendingTracker.getSpendingList();
     }
 
     //Requires: non-negative double amount
@@ -93,14 +97,14 @@ public class BankAccount {
     }
 
 
-    //Effects: Print the account user name and remaining balance
+    //Effects: Print the account username and remaining balance
     public String displayBalance() {
         String balanceStr = String.format("%.2f", balance); // Credit to TellerApp project
         return (name + "'s Balance: $" + balanceStr);
     }
 
 
-    //Effects: Takes an input String and search through this.myPurchaseList for an item with matching name.
+    //Effects: Takes an input String and search through this.mySpendingTracker for an item with matching name.
     // returns the first stance of the item. Does not account for repeating name.
     public int searchItem(String inputName) {
         for (Purchase itemInList: this.getMyPurchaseList()) {

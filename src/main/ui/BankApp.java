@@ -1,17 +1,14 @@
 package ui;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 import model.BankAccount;
 import model.*;
-
 
 //Class credit to the TellerApp application
 // This class serve as an application interface for operating different features included in the user storeiss
 public class BankApp {
     private Scanner input;
     private BankAccount bank;
-
 
     //Effects: Run the Bank Application
     public BankApp() {
@@ -24,7 +21,7 @@ public class BankApp {
         boolean keepGoing = true;
         String command = null;
 
-        init();
+        init(); // Initialize scanner and bank account object
         askAccName();
 
         while (keepGoing) {
@@ -42,9 +39,9 @@ public class BankApp {
         System.out.println("\nThank you for using the Spending Coach program! Until Next Time!");
     }
 
-    //Requires: non zero lenght String
+    //Requires: non-zero length String
     //Modifies: this
-    //Effects: Get user name from keyboard and store in bank user name
+    //Effects: Get username from keyboard and store in bank user name
     private void askAccName() {
         System.out.println("What is your name?");
         bank.setAccName(input.nextLine());
@@ -60,13 +57,17 @@ public class BankApp {
 
     //Effects: Displays the menu of the appication to the user
     public void displayMenu() {
-        System.out.println("\nSelect from:");
+        System.out.println("--------------------------");
+        System.out.println(this.bank.getAccName() + "'s Bank Options");
+        System.out.println("--------------------------");
+        System.out.println("Select from:");
         System.out.println("\td -> deposit");
         System.out.println("\tw -> withdraw");
-        System.out.println("\tp --> make purchase");
-        System.out.println("\tsg --> set saving goals");
+        System.out.println("\tm --> make purchase");
         System.out.println("\ts ->  print all purchases/spending");
-        System.out.println("\tpg ->  print all active financial goals");
+        System.out.println("\tsg --> set saving goals");
+        System.out.println("\tp ->  print balance and active financial goals");
+        System.out.println("\tst ->  print the statistics of all your spending");
         System.out.println("\tq -> quit");
     }
 
@@ -77,14 +78,16 @@ public class BankApp {
             doDeposit();
         } else if (command.equals("w")) {
             doWithdrawal();
-        } else if (command.equals("p")) {
+        } else if (command.equals("m")) {
             makePurchase();
         } else if (command.equals("s")) {
             displayAllPurchases();
         } else if (command.equals("sg")) {
-            activateSavingGoals();
-        }  else if (command.equals("pg")) {
-            displayActiveFinGoals();
+            updateSavingGoals();
+        } else if (command.equals("p")) {
+            displayOverallBalance();
+        } else if (command.equals("st")) {
+            performStats();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -103,8 +106,7 @@ public class BankApp {
         } else {
             System.out.println("Cannot deposit negative amount...\n");
         }
-        System.out.println(bank.displayBalance());
-        System.out.println("Available balance : $" + bank.getNetBalance());
+        displayOverallBalance();
     }
 
     //Used from TellerApp project
@@ -122,13 +124,12 @@ public class BankApp {
             bank.withdraw(amount);
             bank.updateNetBalance(-1 * amount);
         }
-        System.out.println(bank.displayBalance());
-        System.out.println("Available balance : $" + bank.getNetBalance());
+        displayOverallBalance();
     }
 
     //Modifies: this
     //Effects: Ask for saving amount, check if amount entered is valid then store in net balance after calculation
-    public void activateSavingGoals() {
+    public void updateSavingGoals() {
         System.out.println("How much money do you want to save this month?");
         double savingsAmount = input.nextDouble();
 
@@ -137,17 +138,8 @@ public class BankApp {
         if (validSavings && bank.getBalance() != 0) {
             bank.getMyFinGoals().setSavingAmount(savingsAmount);
             bank.setNetBalance(bank.getBalance() - bank.getMyFinGoals().getSavingAmount());
-            System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
-        }
-    }
-
-    //Effects: Display user's available balance and current saving amount
-    public void displayActiveFinGoals() {
-        if (bank.getMyFinGoals().getSavingAmount() != 0) {
-            System.out.println("Available balance : $" + bank.getNetBalance());
-            System.out.println("Saving goal amount: $" + bank.getMyFinGoals().getSavingAmount());
-        } else {
-            System.out.println("There are currently no active saving goals.");
+            bank.getMyFinGoals().setIsSaving(true);
+            displayOverallBalance();
         }
     }
 
@@ -155,34 +147,67 @@ public class BankApp {
     public void displayAllPurchases() {
         for (Purchase items: this.bank.getMyPurchaseList()) {
             System.out.println(items.itemName() + " | $" + items.value());
-            System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
         }
+        System.out.println("\n");
+        displayOverallBalance(); // Overall Display
     }
 
     //Modifies: this
-    //Effects: Take purchase amount and name. Then, check if user has enough available balance after considering
+    //Effects: Take purchase amount and name. Then, check if user has enough spendable balance after considering
     // saving goals (or other financial goals in the future). Then, print balance after the purchase
     public void makePurchase() {
-        ArrayList<Purchase> purchaseList = bank.getMyPurchaseList();
         String itemName;
         System.out.println("What is the name of the item/transaction?");
         itemName = input.next();
         System.out.println("How much is this item?");
         double value = input.nextDouble();
 
-        if (value > bank.getNetBalance()) {
-            System.out.println("Not enough balance! Purchase goes against saving quota!");
+        if (value > bank.getBalance()) {
+            System.out.println("Not enough balance!");
+            if (value > bank.getNetBalance() && bank.getMyFinGoals().getIsSaving()) {
+                System.out.println("Purchase goes against saving quota!");
+            }
         } else {
             bank.withdraw(value);
             bank.updateNetBalance(-1 * value);
-            purchaseList.add(new Purchase(itemName,value));
+            bank.getMyPurchaseList().add(new Purchase(itemName,value));
 
-            System.out.println("Purchase successful!\n");
+            System.out.println("Purchase successful!");
             int itemIndex = bank.searchItem(itemName);
-            System.out.println(purchaseList.get(itemIndex).displayTransaction());
-            System.out.println(bank.displayBalance());
-            System.out.println("\nSpendable balance : $" + bank.getNetBalance());
+            System.out.println(bank.getMyPurchaseList().get(itemIndex).displayTransaction());
+            displayOverallBalance(); // Overall Display
+        }
+    }
+
+    //Effects: Prints the current balance, spendable and any target savings
+    public void displayOverallBalance() {
+        System.out.println(bank.displayBalance());
+        System.out.println("Spendable balance : $" + bank.getNetBalance());
+        if (this.bank.getMyFinGoals().getIsSaving()) {
             System.out.println("Your targeted saving amounts: $" + bank.getMyFinGoals().getSavingAmount());
+        } else {
+            System.out.println("There are currently no active saving goals.");
+        }
+    }
+
+    // Print item with highest spending and sum of total spending list's value
+    public void performStats() {
+        System.out.println("Item with highest spending: ");
+        System.out.println(bank.getMyPurchaseList().get(bank.getMySpendingTracker().getMaxPurchaseIndex()).itemName()
+                + " | $" + bank.getMyPurchaseList().get(bank.getMySpendingTracker().getMaxPurchaseIndex()).value());
+
+        System.out.println("Total amount of all items spent: $" + bank.getMySpendingTracker().getTotalSpendings());
+
+        int multiplier;
+        for (Purchase item: this.bank.getMyPurchaseList()) {
+            multiplier = 0;
+            multiplier = (int) (item.value() / 5.0);
+            System.out.println(item.itemName());
+            String histogram = "";
+            for (int i = 0; i < multiplier; i++) {
+                histogram += "#";
+            }
+            System.out.println(histogram);
         }
     }
 }

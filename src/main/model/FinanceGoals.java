@@ -4,8 +4,16 @@ package model;
 // Right now it only contains saving goals field.
 public class FinanceGoals {
     private double savingAmount;
+    private Boolean isSaving;
 
-    //Requires: non negative target saving amount; less than balance
+    //Modifies: this
+    //Effects: Initialize isSaving and savingAmount
+    public FinanceGoals() {
+        this.savingAmount = 0;
+        this.isSaving = false;
+    }
+
+    //Requires: non-negative target saving amount; less than balance
     //Modifies: this
     public FinanceGoals(double savingAmount) {
         this.savingAmount = savingAmount;
@@ -17,6 +25,14 @@ public class FinanceGoals {
 
     public void setSavingAmount(double savingAmount) {
         this.savingAmount = savingAmount;
+    }
+
+    public void setIsSaving(Boolean isUserSaving) {
+        this.isSaving = isUserSaving;
+    }
+
+    public Boolean getIsSaving() {
+        return this.isSaving;
     }
 
 }
