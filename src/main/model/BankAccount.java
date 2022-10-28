@@ -14,13 +14,14 @@ public class BankAccount implements Writable {
 
     //Integrating Spending Tracking and Saving Goals features into user bank account
     private SpendingTracker mySpendingTracker;
-    private FinanceGoals myFinGoals = new FinanceGoals();
+    private FinanceGoals myFinGoals;
 
     public BankAccount() {
         this.accName = "";
         this.balance = 0;
         this.netBalance = 0;
-        this.mySpendingTracker = new SpendingTracker(); //Is it good practice?
+        this.mySpendingTracker = new SpendingTracker();
+        this.myFinGoals = new FinanceGoals();
     }
 
     //Requires: accName has non-zero length
@@ -29,6 +30,7 @@ public class BankAccount implements Writable {
     // add the balance amount into this.balance. Finally, initialize a SpendingTracker
     public BankAccount(String accName, double balance) {
         this.accName = accName;
+        // TODO: Check if this logic is nessscary in the constructor
         if (balance <= 0) {
             this.balance = 0;
             this.netBalance += 0;
@@ -36,7 +38,16 @@ public class BankAccount implements Writable {
             this.balance = balance;
             this.netBalance += balance;
         }
-        this.mySpendingTracker = new SpendingTracker(); //Is this good practice?
+        this.mySpendingTracker = new SpendingTracker();
+        this.myFinGoals = new FinanceGoals();
+    }
+
+    public BankAccount(String accName, double balance, double netBalance) {
+        this.accName = accName;
+        this.balance = balance;
+        this.netBalance = netBalance;
+        this.mySpendingTracker = new SpendingTracker();
+        this.myFinGoals = new FinanceGoals();
     }
 
     public void setNetBalance(double netBalance) {

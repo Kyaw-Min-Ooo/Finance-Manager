@@ -23,6 +23,14 @@ public class SpendingTracker implements Writable {
         return this.maxPurchaseIndex;
     }
 
+    public void setTotalSpending(double totalSpending) {
+        this.totalSpending = totalSpending;
+    }
+
+    public void setMaxPurchaseIndex(int maxPurchaseIndex) {
+        this.maxPurchaseIndex = maxPurchaseIndex;
+    }
+
     public ArrayList<Purchase> getSpendingList() {
         return this.spendingList;
     }

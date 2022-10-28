@@ -225,4 +225,5 @@ public class BankApp {
             System.out.println(histogram + "\n");
         }
     }
+
 }
