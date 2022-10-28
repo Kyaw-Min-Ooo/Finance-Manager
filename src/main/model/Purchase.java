@@ -24,7 +24,6 @@ public class Purchase  {
         return this.itemName;
     }
 
-
     //Effects: Format the item purchase with price and name
     public String displayTransaction() {
         return (itemName + " | $" + value);

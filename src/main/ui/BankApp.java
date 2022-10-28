@@ -1,27 +1,40 @@
 package ui;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import model.BankAccount;
 import model.*;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
-//Class credit to the TellerApp application
+// Class credit to the TellerApp application example
 // This class serve as an application interface for operating different features included in the user stories
 public class BankApp {
+    private static final String JSON_STORE = "./data/bankaccount.json";
     private Scanner input;
     private BankAccount bank;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+
+    //TODO: Implement saveBankAccount() and loadWorkRoom()
 
     //Effects: Run the Bank Application
-    public BankApp() {
+    public BankApp() throws FileNotFoundException {
+        bank = new BankAccount();
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
+        // TODO: Create constructor for reader and writer
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         runBankApp();
     }
 
     //Modifies: this
     //Effects: Help establish a smooth control flow for user operations on the app
-    private void runBankApp() {
+    private void runBankApp()  {
         boolean keepGoing = true;
         String command = null;
 
-        init(); // Initialize scanner and bank account object
         askAccName();
 
         while (keepGoing) {
@@ -47,13 +60,6 @@ public class BankApp {
         bank.setAccName(input.nextLine());
     }
 
-    //Modifies: this
-    //Effects: Initializes BankAccount and the Scanner
-    private void init() {
-        bank = new BankAccount();
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-    }
 
     //Effects: Displays the menu of the application to the user
     public void displayMenu() {
@@ -130,11 +136,10 @@ public class BankApp {
     //Modifies: this
     //Effects: Ask for saving amount, check if amount entered is valid then store in net balance after calculation
     public void updateSavingGoals() {
-        System.out.println("How much money do you want to save this month?");
+        System.out.print("How much money do you want to save this month? $");
         double savingsAmount = input.nextDouble();
 
         Boolean validSavings = bank.getBalance() > savingsAmount;
-
         if (validSavings && bank.getBalance() != 0) {
             bank.getMyFinGoals().setSavingAmount(savingsAmount);
             bank.setNetBalance(bank.getBalance() - bank.getMyFinGoals().getSavingAmount());
@@ -142,13 +147,13 @@ public class BankApp {
             displayOverallBalance();
         } else {
             System.out.println("Invalid saving input! Please try again");
-            updateSavingGoals();
+            updateSavingGoals(); // Self reference to allow one more input
         }
     }
 
     //Effects: Display all purchases made by the user in the whole month
     public void displayAllPurchases() {
-        for (Purchase items: this.bank.getMyPurchaseList()) {
+        for (Purchase items: this.bank.getMySpendingList()) {
             System.out.println(items.itemName() + " | $" + items.value());
         }
         System.out.println("\n");
@@ -159,10 +164,7 @@ public class BankApp {
     //Effects: Take purchase amount and name. Then, check if user has enough spendable balance after considering
     // saving goals (or other financial goals in the future). Then, print balance after the purchase
     public void makePurchase() {
-        String itemName;
-        System.out.println("What is the name of the item/transaction?");
-        itemName = input.next();
-        System.out.println("How much is this item?");
+        System.out.print("How much is this item? $");
         double value = input.nextDouble();
 
         if (bank.getNetBalance() < value || bank.getNetBalance() < value) {
@@ -171,13 +173,16 @@ public class BankApp {
                 System.out.println("Purchase goes against saving quota!");
             }
         } else {
+            String itemName;
+            System.out.println("What is the name of the item/transaction? ");
+            itemName = input.next();
             bank.withdraw(value);
             bank.updateNetBalance(-1 * value);
-            bank.getMyPurchaseList().add(new Purchase(itemName,value));
+            bank.getMySpendingList().add(new Purchase(itemName,value));
 
             System.out.println("Purchase successful!");
             int itemIndex = bank.getMySpendingTracker().searchItem(itemName);
-            System.out.println(bank.getMyPurchaseList().get(itemIndex).displayTransaction());
+            System.out.println(bank.getMySpendingList().get(itemIndex).displayTransaction());
             displayOverallBalance(); // Overall Display
         }
     }
@@ -196,16 +201,19 @@ public class BankApp {
     // Print item with the highest spending, sum of total spending list's value, visualize based on spending amount
     public void performStats() {
         bank.getMySpendingTracker().calculateMaxSpending();
-        System.out.println("Item with highest spending: ");
+        System.out.print("Item with highest spending: ");
+
+        // Local highestIndex created since too long chain method call
         int highestIndex = bank.getMySpendingTracker().getMaxPurchaseIndex();
-        System.out.println(bank.getMyPurchaseList().get(highestIndex).itemName()
-                + " | $" + bank.getMyPurchaseList().get(highestIndex).value());
+        System.out.println(bank.getMySpendingList().get(highestIndex).itemName()
+                + " | $" + bank.getMySpendingList().get(highestIndex).value());
 
         System.out.println("Total amount of all items spent: $" + bank.getMySpendingTracker().getTotalSpending());
 
-        //Visualise data
+        //Visualise spending amounts based on spending ratio!
+        System.out.println("");
         int multiplier;
-        for (Purchase item: this.bank.getMyPurchaseList()) {
+        for (Purchase item: this.bank.getMySpendingList()) {
             multiplier = 0;
             multiplier = (int) (item.value() / 5.0);
             System.out.println(item.itemName());
@@ -214,7 +222,7 @@ public class BankApp {
                 histogram += "#";
             }
             histogram = (multiplier < 1) ? "#" : histogram; // In case iem costs lower than 5 bucks
-            System.out.println(histogram);
+            System.out.println(histogram + "\n");
         }
     }
 }

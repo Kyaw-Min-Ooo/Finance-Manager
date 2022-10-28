@@ -2,11 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
-// This BankAccount class stores the user's name, balance and net balance (calculated with regard to saving goals).
+// This BankAccount class stores the user's accName, balance and net balance (calculated with regard to saving goals).
 // It also contains a list of purchases made from the account's balance.
 public class BankAccount {
     private double balance;
-    private String name;
+    private String accName;
     private double netBalance;
 
     //Integrating Spending Tracking and Saving Goals features into user bank account
@@ -14,18 +14,18 @@ public class BankAccount {
     private FinanceGoals myFinGoals = new FinanceGoals();
 
     public BankAccount() {
-        this.name = "";
+        this.accName = "";
         this.balance = 0;
         this.netBalance = 0;
         this.mySpendingTracker = new SpendingTracker(); //Is it good practice?
     }
 
-    //Requires: name has non-zero length
+    //Requires: accName has non-zero length
     //Modifies: this
-    //Effects: Checks if balance is zero under if yes, then set balance to zero otherwise, add the balance amount into
-    // this.balance
-    public BankAccount(String name, double balance) {
-        this.name = name;
+    //Effects: Checks if balance is zero or under. Yes --> Set balance and net balance to zero otherwise,
+    // add the balance amount into this.balance. Finally, initialize a SpendingTracker
+    public BankAccount(String accName, double balance) {
+        this.accName = accName;
         if (balance <= 0) {
             this.balance = 0;
             this.netBalance += 0;
@@ -59,12 +59,12 @@ public class BankAccount {
         return this.balance;
     }
 
-    public void setAccName(String name) {
-        this.name = name;
+    public void setAccName(String accName) {
+        this.accName = accName;
     }
 
     public String getAccName() {
-        return this.name;
+        return this.accName;
     }
 
     //Effects: Return financial class which for now only contains saving goal
@@ -76,7 +76,7 @@ public class BankAccount {
         return this.mySpendingTracker;
     }
 
-    public ArrayList<Purchase> getMyPurchaseList() {
+    public ArrayList<Purchase> getMySpendingList() {
         return this.mySpendingTracker.getSpendingList();
     }
 
@@ -100,7 +100,7 @@ public class BankAccount {
     //Effects: Print the account username and remaining balance
     public String displayBalance() {
         String balanceStr = String.format("%.2f", balance); // Credit to TellerApp project
-        return (name + "'s Balance: $" + balanceStr);
+        return (accName + "'s Balance: $" + balanceStr);
     }
 
 

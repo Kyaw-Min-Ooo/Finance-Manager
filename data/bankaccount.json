@@ -1,0 +1,23 @@
+{
+  "accName": "Alex",
+  "balance": 0.00,
+  "netBalance": 0.00,
+  "spendingTracker": {
+    "maxPurchaseIndex": -1,
+    "totalSpending": 0.00,
+    "spendingList": [
+        {
+          "itemName": "Amazon",
+          "itemValue": 54.12
+        },
+        {
+          "itemName": "Uber",
+          "itemValue": 23.0
+        }
+      ]
+  },
+  "financeGoals": {
+    "isSaving": true,
+    "savingAmount": 0.00
+  }
+}

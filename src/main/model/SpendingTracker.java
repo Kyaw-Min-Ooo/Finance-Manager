@@ -10,7 +10,9 @@ public class SpendingTracker {
     private int maxPurchaseIndex;
 
     SpendingTracker() {
-        spendingList =  new ArrayList<>();
+        this.spendingList =  new ArrayList<>();
+        totalSpending = 0;
+        maxPurchaseIndex = -1;
     }
 
     public int getMaxPurchaseIndex() {
@@ -21,28 +23,27 @@ public class SpendingTracker {
         return this.spendingList;
     }
 
-    //Effects: Returns the total spending of the spending list
+    //Effects: Calculate and return the total spending of the spending list
     public double getTotalSpending() {
-        double totalSpending = 0;
+        double currTotal = 0;
         for (Purchase purchase: this.spendingList) {
-            totalSpending += purchase.value();
+            currTotal += purchase.value();
         }
-        this.totalSpending = totalSpending;
-        return totalSpending;
+        this.totalSpending = currTotal;
+        return this.totalSpending;
     }
 
     //Modifies: this
-    //Effects Return the highest spending item from the spending list and note the index of it
+    //Effects Return the highest spending item's index from the spending list and assign to this class field
     public double calculateMaxSpending() {
-        int maxPurchase = 0;
+        int currMaxPurchase = 0;
         for (Purchase purchase: this.spendingList) {
-            if (this.spendingList.get(maxPurchase).value() < purchase.value()) {
-                maxPurchase = this.spendingList.indexOf(purchase);
+            if (this.spendingList.get(currMaxPurchase).value() < purchase.value()) {
+                currMaxPurchase = this.spendingList.indexOf(purchase);
             }
         }
-
-        this.maxPurchaseIndex = maxPurchase;
-        return this.spendingList.get(maxPurchase).value();
+        this.maxPurchaseIndex = currMaxPurchase;
+        return this.spendingList.get(maxPurchaseIndex).value();
     }
 
     //Effects: Takes an input String and search through this.mySpendingTracker for an item with matching name.

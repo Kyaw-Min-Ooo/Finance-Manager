@@ -11,7 +11,7 @@ class BankAccountTest {
     @BeforeEach
     void runBefore() {
         testAccount = new BankAccount("Alex",1000);
-        testAccount.getMyPurchaseList().add(new Purchase("Amazon",300));
+        testAccount.getMySpendingList().add(new Purchase("Amazon",300));
     }
 
     @Test
