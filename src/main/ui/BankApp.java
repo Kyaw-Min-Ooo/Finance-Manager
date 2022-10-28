@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import model.BankAccount;
 import model.*;
@@ -16,14 +17,11 @@ public class BankApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
-    //TODO: Implement saveBankAccount() and loadWorkRoom()
-
     //Effects: Run the Bank Application
     public BankApp() throws FileNotFoundException {
         bank = new BankAccount();
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        // TODO: Create constructor for reader and writer
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
         runBankApp();
@@ -71,9 +69,11 @@ public class BankApp {
         System.out.println("\tw -> withdraw");
         System.out.println("\tm --> make purchase");
         System.out.println("\ts ->  print all purchases/spending");
-        System.out.println("\tsg --> set saving goals");
+        System.out.println("\tg --> set saving goals");
         System.out.println("\tp ->  print balance and active financial goals");
-        System.out.println("\tst ->  print the statistics of all your spending");
+        System.out.println("\tt ->  print the statistics of all your spending");
+        System.out.println("\tl ->  load bank account from file");
+        System.out.println("\tf ->  save bank account to file");
         System.out.println("\tq -> quit");
     }
 
@@ -88,12 +88,16 @@ public class BankApp {
             makePurchase();
         } else if (command.equals("s")) {
             displayAllPurchases();
-        } else if (command.equals("sg")) {
+        } else if (command.equals("g")) {
             updateSavingGoals();
         } else if (command.equals("p")) {
             displayOverallBalance();
-        } else if (command.equals("st")) {
+        } else if (command.equals("t")) {
             performStats();
+        } else if (command.equals("l")) {
+            loadBankAccount();
+        } else if (command.equals("f")) {
+            saveBankAccount();
         } else {
             System.out.println("Selection not valid...");
         }
@@ -139,7 +143,7 @@ public class BankApp {
         System.out.print("How much money do you want to save this month? $");
         double savingsAmount = input.nextDouble();
 
-        Boolean validSavings = bank.getBalance() > savingsAmount;
+        boolean validSavings = bank.getBalance() > savingsAmount;
         if (validSavings && bank.getBalance() != 0) {
             bank.getMyFinGoals().setSavingAmount(savingsAmount);
             bank.setNetBalance(bank.getBalance() - bank.getMyFinGoals().getSavingAmount());
@@ -167,7 +171,7 @@ public class BankApp {
         System.out.print("How much is this item? $");
         double value = input.nextDouble();
 
-        if (bank.getNetBalance() < value || bank.getNetBalance() < value) {
+        if (bank.getNetBalance() < value || bank.getBalance() < value) {
             System.out.println("Not enough balance!");
             if (bank.getNetBalance() < value && bank.getMyFinGoals().getIsSaving()) {
                 System.out.println("Purchase goes against saving quota!");
@@ -208,10 +212,9 @@ public class BankApp {
         System.out.println(bank.getMySpendingList().get(highestIndex).itemName()
                 + " | $" + bank.getMySpendingList().get(highestIndex).value());
 
-        System.out.println("Total amount of all items spent: $" + bank.getMySpendingTracker().getTotalSpending());
+        System.out.println("Total spending: $" + bank.getMySpendingTracker().getTotalSpending() + "\n");
 
         //Visualise spending amounts based on spending ratio!
-        System.out.println("");
         int multiplier;
         for (Purchase item: this.bank.getMySpendingList()) {
             multiplier = 0;
@@ -225,5 +228,31 @@ public class BankApp {
             System.out.println(histogram + "\n");
         }
     }
+
+    // EFFECTS: saves the BankAccount to file
+    // Code credit to Thingy example project
+    private void saveBankAccount() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(this.bank);
+            jsonWriter.close();
+            System.out.println("Saved " + this.bank.getAccName() + " to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads BankAccount from file
+    // Code credit to Thingy example project
+    private void loadBankAccount() {
+        try {
+            this.bank = jsonReader.read();
+            System.out.println("Loaded " + this.bank.getAccName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
 
 }
