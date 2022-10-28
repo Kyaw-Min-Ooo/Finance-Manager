@@ -1,9 +1,13 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 // Purchase helps the user track purchases made. It stores the name of the item or service bought and the price.
 // It is used in SpendingTracker class to store a list of all purchases made. It will later be analyzed to help user
 // review spending pattern.
-public class Purchase  {
+public class Purchase implements Writable {
 
     private double value;
     private String itemName;
@@ -27,5 +31,13 @@ public class Purchase  {
     //Effects: Format the item purchase with price and name
     public String displayTransaction() {
         return (itemName + " | $" + value);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("itemName", this.itemName);
+        json.put("itemValue", this.value);
+        return json;
     }
 }

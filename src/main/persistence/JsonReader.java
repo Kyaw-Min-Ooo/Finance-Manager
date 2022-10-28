@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import org.json.*;
 
 // Represents a reader that reads bankaccount from JSON data stored in file
 // Code credit to thingy project example
@@ -40,6 +41,6 @@ public class JsonReader {
     }
 
     private BankAccount parseBankAccount(JSONObject jsonObject) {
-        String name
+        return new BankAccount(); // TODO: implement this later
     }
 }

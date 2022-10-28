@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // SpendingTracker is a class that holds a list of purchases made within a month's time. It can later be used to
 // perform statistical analysis to help user understand their spending pattern.
-public class SpendingTracker {
+public class SpendingTracker implements Writable {
     private ArrayList<Purchase> spendingList;
     private double totalSpending;
     private int maxPurchaseIndex;
@@ -57,6 +61,22 @@ public class SpendingTracker {
         return -1;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("maxPurchaseIndex", this.maxPurchaseIndex);
+        json.put("totalSpending", this.totalSpending);
+        json.put("spendingList", spendingListToJson());
+        return json;
+    }
 
+    // EFFECTS: returns list of purchases in the spending list as a JSON array
+    private JSONArray spendingListToJson() {
+        JSONArray jsonArray = new JSONArray();
 
+        for (Purchase item: this.spendingList) {
+            jsonArray.put(item.toJson());
+        }
+        return jsonArray;
+    }
 }

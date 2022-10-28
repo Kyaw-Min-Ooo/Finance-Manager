@@ -1,8 +1,12 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 //This class is used to track financial goals such as saving goals or include bills due later or limit user spending
 // Right now it only contains saving goals field.
-public class FinanceGoals {
+public class FinanceGoals implements Writable {
     private double savingAmount;
     private Boolean isSaving;
 
@@ -35,4 +39,11 @@ public class FinanceGoals {
         return this.isSaving;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("isSaving", this.isSaving);
+        json.put("savingAmount", this.savingAmount);
+        return json;
+    }
 }

@@ -1,10 +1,13 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 // This BankAccount class stores the user's accName, balance and net balance (calculated with regard to saving goals).
 // It also contains a list of purchases made from the account's balance.
-public class BankAccount {
+public class BankAccount implements Writable {
     private double balance;
     private String accName;
     private double netBalance;
@@ -96,11 +99,21 @@ public class BankAccount {
         return this.balance; // returns the balance instead of amount withdrawn
     }
 
-
     //Effects: Print the account username and remaining balance
     public String displayBalance() {
         String balanceStr = String.format("%.2f", balance); // Credit to TellerApp project
         return (accName + "'s Balance: $" + balanceStr);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("accName", this.accName);
+        json.put("balance", this.balance);
+        json.put("netBalance", this.netBalance);
+        json.put("spendingTracker", this.mySpendingTracker.toJson());
+        json.put("financeGoals", this.myFinGoals.toJson());
+        return json;
     }
 
 
