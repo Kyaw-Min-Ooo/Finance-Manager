@@ -71,7 +71,6 @@ public class JsonWriterTest extends JsonTest{
             bankAcc.getMyFinGoals().setIsSaving(true);
             bankAcc.getMySpendingTracker().setTotalSpending(600);
             bankAcc.getMySpendingTracker().calculateMaxSpending();
-            // TODO: Set the fields for general bank account manually to get code coverage too
 
             JsonWriter writer = new JsonWriter("./data/testWriterGeneralBankAccount.json");
             writer.open();

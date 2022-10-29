@@ -1,11 +1,14 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import persistence.JsonTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class BankAccountTest {
+class BankAccountTest extends JsonTest {
     private BankAccount testAccount;
 
     @BeforeEach
@@ -78,5 +81,32 @@ class BankAccountTest {
         testAccount.updateNetBalance(100);
         assertEquals(300,testAccount.getNetBalance());
         assertEquals(0,testAccount.getMyFinGoals().getSavingAmount());
+    }
+
+    @Test
+    void testToJsonMethod() {
+        BankAccount bankAcc = new BankAccount("GeneralBank",400, 301);
+
+        //Bank Account
+        JSONObject bankAccJson = bankAcc.toJson();
+        assertEquals("GeneralBank", bankAcc.getAccName());
+        assertEquals("GeneralBank", bankAccJson.get("accName"));
+        assertEquals(400.0,bankAccJson.get("balance"));
+        assertEquals(301.0,bankAccJson.get("netBalance"));
+
+
+        //Spending Tracker
+        bankAcc.getMySpendingTracker().setTotalSpending(600);
+        bankAcc.getMySpendingList().add(new Purchase("Amazon",100));
+        bankAcc.getMySpendingList().add(new Purchase("Uber",200));
+        bankAcc.getMySpendingList().add(new Purchase("PS5",300));
+        bankAcc.getMySpendingTracker().setTotalSpending(600);
+        bankAcc.getMySpendingTracker().calculateMaxSpending();
+
+        JSONObject mySpendingListJson = bankAcc.getMySpendingTracker().toJson();
+
+        assertEquals(2, mySpendingListJson.get("maxPurchaseIndex"));
+        assertEquals(600.0,mySpendingListJson.get("totalSpending"));
+
     }
 }

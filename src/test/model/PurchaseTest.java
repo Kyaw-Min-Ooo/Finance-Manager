@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +23,13 @@ public class PurchaseTest {
     @Test
     void testDisplayTransaction() {
         assertTrue(testItem.displayTransaction().contains("Amazon" + " | $" + "45"));
+    }
+
+    @Test
+    void testToJsonMethod() {
+        JSONObject testFinGoalJson = testItem.toJson();
+        assertEquals("Amazon",testFinGoalJson.get("itemName"));
+        assertEquals(45.0,testFinGoalJson.get("itemValue"));
     }
 
 
