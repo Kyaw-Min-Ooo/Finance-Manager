@@ -1,5 +1,6 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -107,6 +108,5 @@ class BankAccountTest extends JsonTest {
 
         assertEquals(2, mySpendingListJson.get("maxPurchaseIndex"));
         assertEquals(600.0,mySpendingListJson.get("totalSpending"));
-
-    }
+        }
 }
