@@ -66,7 +66,6 @@ public class JsonReader {
 
     // MODIFIES: bankAcc
     // EFFECTS: parses spendingTracker from JSON object and adds them to workroom
-    //TODO: Implement this function later
     private void addSpendingTracker(BankAccount bankAcc, JSONObject jsonObject) {
         JSONObject spendingTracker = jsonObject.getJSONObject("spendingTracker");
         Double totalSpending = spendingTracker.getDouble("totalSpending");

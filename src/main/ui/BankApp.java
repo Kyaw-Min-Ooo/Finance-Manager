@@ -204,28 +204,32 @@ public class BankApp {
 
     // Print item with the highest spending, sum of total spending list's value, visualize based on spending amount
     public void performStats() {
-        bank.getMySpendingTracker().calculateMaxSpending();
-        System.out.print("Item with highest spending: ");
+        if (bank.getMySpendingList().isEmpty()) {
+            System.out.println("No purchase data present to display statistics. Please try again later...");
+        } else {
+            bank.getMySpendingTracker().calculateMaxSpending();
+            System.out.print("Item with highest spending: ");
 
-        // Local highestIndex created since too long chain method call
-        int highestIndex = bank.getMySpendingTracker().getMaxPurchaseIndex();
-        System.out.println(bank.getMySpendingList().get(highestIndex).itemName()
-                + " | $" + bank.getMySpendingList().get(highestIndex).value());
+            // Local highestIndex created since too long chain method call
+            int highestIndex = bank.getMySpendingTracker().getMaxPurchaseIndex();
+            System.out.println(bank.getMySpendingList().get(highestIndex).itemName()
+                    + " | $" + bank.getMySpendingList().get(highestIndex).value());
 
-        System.out.println("Total spending: $" + bank.getMySpendingTracker().getTotalSpending() + "\n");
+            System.out.println("Total spending: $" + bank.getMySpendingTracker().getTotalSpending() + "\n");
 
-        //Visualise spending amounts based on spending ratio!
-        int multiplier;
-        for (Purchase item: this.bank.getMySpendingList()) {
-            multiplier = 0;
-            multiplier = (int) (item.value() / 5.0);
-            System.out.println(item.itemName());
-            String histogram = "";
-            for (int i = 0; i < multiplier; i++) {
-                histogram += "#";
+            //Visualise spending amounts based on spending ratio!
+            int multiplier;
+            for (Purchase item: this.bank.getMySpendingList()) {
+                multiplier = 0;
+                multiplier = (int) (item.value() / 5.0);
+                System.out.println(item.itemName());
+                String histogram = "";
+                for (int i = 0; i < multiplier; i++) {
+                    histogram += "#";
+                }
+                histogram = (multiplier < 1) ? "#" : histogram; // In case iem costs lower than 5 bucks
+                System.out.println(histogram + "\n");
             }
-            histogram = (multiplier < 1) ? "#" : histogram; // In case iem costs lower than 5 bucks
-            System.out.println(histogram + "\n");
         }
     }
 

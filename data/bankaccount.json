@@ -1,23 +1,31 @@
 {
-  "accName": "Alex",
-  "balance": 0.00,
-  "netBalance": 0.00,
-  "spendingTracker": {
-    "maxPurchaseIndex": -1,
-    "totalSpending": 0.00,
-    "spendingList": [
-        {
-          "itemName": "Amazon",
-          "itemValue": 54.12
-        },
-        {
-          "itemName": "Uber",
-          "itemValue": 23.0
-        }
-      ]
-  },
-  "financeGoals": {
-    "isSaving": true,
-    "savingAmount": 0.00
-  }
+    "balance": 7477.66,
+    "financeGoals": {
+        "savingAmount": 98,
+        "isSaving": true
+    },
+    "accName": "Alex",
+    "netBalance": 7379.66,
+    "spendingTracker": {
+        "totalSpending": 2476.46,
+        "spendingList": [
+            {
+                "itemName": "Amazon",
+                "itemValue": 54.12
+            },
+            {
+                "itemName": "Uber",
+                "itemValue": 23
+            },
+            {
+                "itemName": "Amazon",
+                "itemValue": 56.34
+            },
+            {
+                "itemName": "test",
+                "itemValue": 2343
+            }
+        ],
+        "maxPurchaseIndex": 3
+    }
 }
