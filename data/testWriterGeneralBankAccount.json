@@ -1,0 +1,27 @@
+{
+    "balance": 400,
+    "financeGoals": {
+        "savingAmount": 99,
+        "isSaving": true
+    },
+    "accName": "GeneralBank",
+    "netBalance": 301,
+    "spendingTracker": {
+        "totalSpending": 600,
+        "spendingList": [
+            {
+                "itemName": "Amazon",
+                "itemValue": 100
+            },
+            {
+                "itemName": "Uber",
+                "itemValue": 200
+            },
+            {
+                "itemName": "PS5",
+                "itemValue": 300
+            }
+        ],
+        "maxPurchaseIndex": 2
+    }
+}
