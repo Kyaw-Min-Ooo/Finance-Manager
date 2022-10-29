@@ -1,7 +1,6 @@
 package persistence;
 
 import model.BankAccount;
-import model.FinanceGoals;
 import model.Purchase;
 import org.json.JSONObject;
 
@@ -18,7 +17,7 @@ import org.json.*;
 public class JsonReader {
     private String source;
 
-    // EFFECTS: constructs reader to read from source file
+    // EFFECTS: constructs reader to read from source file path
     public JsonReader(String source) {
         this.source = source;
     }
@@ -42,7 +41,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses BankAccount from JSON object and returns it
+    // EFFECTS: parses BankAccount from JSON object and construct BankAccount from the data
     private BankAccount parseBankAccount(JSONObject jsonObject) {
         String accName = jsonObject.getString("accName");
         Double balance = jsonObject.getDouble("balance");
@@ -65,7 +64,7 @@ public class JsonReader {
     }
 
     // MODIFIES: bankAcc
-    // EFFECTS: parses spendingTracker from JSON object and adds them to workroom
+    // EFFECTS: parses spendingTracker from JSON object and adds them to BankAccount
     private void addSpendingTracker(BankAccount bankAcc, JSONObject jsonObject) {
         JSONObject spendingTracker = jsonObject.getJSONObject("spendingTracker");
         Double totalSpending = spendingTracker.getDouble("totalSpending");
@@ -88,7 +87,7 @@ public class JsonReader {
     }
 
     // MODIFIES: bankAcc
-    // EFFECTS: parses a purchase from JSON object and adds it to spendingList in bankAcc
+    // EFFECTS: parses a purchase from JSON array and adds it to spendingList in bankAcc
     private void addPurchase(BankAccount bankAcc, JSONObject jsonObject) {
         String itemName = jsonObject.getString("itemName");
         Double itemValue = jsonObject.getDouble("itemValue");

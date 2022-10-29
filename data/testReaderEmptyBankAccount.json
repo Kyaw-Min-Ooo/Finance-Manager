@@ -1,0 +1,14 @@
+{
+  "balance": 0,
+  "financeGoals": {
+    "savingAmount": 0,
+    "isSaving": false
+  },
+  "accName": "EmptyBank",
+  "netBalance": 0,
+  "spendingTracker": {
+    "totalSpending": 0,
+    "spendingList": [],
+    "maxPurchaseIndex": -1
+  }
+}

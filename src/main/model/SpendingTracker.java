@@ -6,13 +6,14 @@ import persistence.Writable;
 
 import java.util.ArrayList;
 
-// SpendingTracker is a class that holds a list of purchases made within a month's time. It can later be used to
+// SpendingTracker is a class that holds a list of purchases made within a month's time. It can be used to
 // perform statistical analysis to help user understand their spending pattern.
 public class SpendingTracker implements Writable {
     private ArrayList<Purchase> spendingList;
     private double totalSpending;
     private int maxPurchaseIndex;
 
+    //Modifies: this
     SpendingTracker() {
         this.spendingList =  new ArrayList<>();
         totalSpending = 0;
@@ -23,19 +24,20 @@ public class SpendingTracker implements Writable {
         return this.maxPurchaseIndex;
     }
 
-    public void setTotalSpending(double totalSpending) {
-        this.totalSpending = totalSpending;
-    }
-
     public void setMaxPurchaseIndex(int maxPurchaseIndex) {
         this.maxPurchaseIndex = maxPurchaseIndex;
+    }
+
+    public void setTotalSpending(double totalSpending) {
+        this.totalSpending = totalSpending;
     }
 
     public ArrayList<Purchase> getSpendingList() {
         return this.spendingList;
     }
 
-    //Effects: Calculate and return the total spending of the spending list
+    //Modifies: this
+    //Effects: Calculate, return the total spending of the spending list and assign that total to class field
     public double getTotalSpending() {
         double currTotal = 0;
         for (Purchase purchase: this.spendingList) {
@@ -46,7 +48,7 @@ public class SpendingTracker implements Writable {
     }
 
     //Modifies: this
-    //Effects Return the highest spending item's index from the spending list and assign to this class field
+    //Effects Return the highest spending item's index from the spending list and assign it to class field
     public double calculateMaxSpending() {
         int currMaxPurchase = 0;
         for (Purchase purchase: this.spendingList) {
@@ -70,6 +72,7 @@ public class SpendingTracker implements Writable {
     }
 
     @Override
+    // Effects: Take class fields and store into JSON objects
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("maxPurchaseIndex", this.maxPurchaseIndex);

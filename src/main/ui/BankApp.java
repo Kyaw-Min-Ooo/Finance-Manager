@@ -138,7 +138,7 @@ public class BankApp {
     }
 
     //Modifies: this
-    //Effects: Ask for saving amount, check if amount entered is valid then store in net balance after calculation
+    //Effects: Ask for saving amount, check if amount entered is valid, store in net balance after calculation
     public void updateSavingGoals() {
         System.out.print("How much money do you want to save this month? $");
         double savingsAmount = input.nextDouble();
@@ -202,7 +202,8 @@ public class BankApp {
         }
     }
 
-    // Print item with the highest spending, sum of total spending list's value, visualize based on spending amount
+    // Effects: Print item with the highest spending, sum of total spending list's value,
+    // visualize the spending pattern based on spending amount
     public void performStats() {
         if (bank.getMySpendingList().isEmpty()) {
             System.out.println("No purchase data present to display statistics. Please try again later...");

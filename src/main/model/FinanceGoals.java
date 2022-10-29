@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
 
-//This class is used to track financial goals such as saving goals or include bills due later or limit user spending
+//This class is used to track financial goals such as saving goals (can include more features later)
 // Right now it only contains saving goals field.
 public class FinanceGoals implements Writable {
     private double savingAmount;
@@ -24,6 +24,7 @@ public class FinanceGoals implements Writable {
     }
 
     // Two parameter constructor mainly used for JSON file parsing
+    //Modifies: this
     public FinanceGoals(double savingAmount, Boolean isSaving) {
         this.savingAmount = savingAmount;
         this.isSaving = isSaving;

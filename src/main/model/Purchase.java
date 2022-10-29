@@ -4,8 +4,7 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 // Purchase helps the user track purchases made. It stores the name of the item or service bought and the price.
-// It is used in SpendingTracker class to store a list of all purchases made. It will later be analyzed to help user
-// review spending pattern.
+// It is used in SpendingTracker class to store a list of all purchases made and analyze user spending pattern
 public class Purchase implements Writable {
 
     private double value;
@@ -33,6 +32,7 @@ public class Purchase implements Writable {
     }
 
     @Override
+    // Effects: Take class fields and store into JSON objects
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("itemName", this.itemName);
