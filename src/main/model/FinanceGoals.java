@@ -24,13 +24,6 @@ public class FinanceGoals implements Writable {
         this.isSaving = true;
     }
 
-    // Two parameter constructor mainly used for JSON file parsing
-    //Modifies: this
-    public FinanceGoals(double savingAmount, Boolean isSaving) {
-        this.savingAmount = savingAmount;
-        this.isSaving = isSaving;
-    }
-
     public double getSavingAmount() {
         return savingAmount;
     }
