@@ -16,6 +16,7 @@ public class BankApp {
     private BankAccount bank;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
+    private GUI ui;
 
     //Effects: Run the Bank Application
     public BankApp() throws FileNotFoundException {
@@ -24,7 +25,8 @@ public class BankApp {
         input.useDelimiter("\n");
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
-        runBankApp();
+        ui = new GUI(this); // Allow GUI class to have access to all info
+        ui.run();
     }
 
     //Modifies: this
@@ -50,6 +52,11 @@ public class BankApp {
         System.out.println("\nThank you for using the Spending Coach program! Until Next Time!");
     }
 
+    //Effects: return this Bank Account reference
+    public BankAccount getBank() {
+        return this.bank;
+    }
+
     //Requires: non-zero length String
     //Modifies: this
     //Effects: Get username from keyboard and store in bank username
@@ -57,7 +64,6 @@ public class BankApp {
         System.out.println("What is your name?");
         bank.setAccName(input.nextLine());
     }
-
 
     //Effects: Displays the menu of the application to the user
     public void displayMenu() {

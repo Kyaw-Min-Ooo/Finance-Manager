@@ -1,27 +1,17 @@
 {
-    "balance": 400,
+    "balance": 951,
     "financeGoals": {
-        "savingAmount": 99,
+        "savingAmount": 200,
         "isSaving": true
     },
-    "accName": "GeneralBank",
-    "netBalance": 301,
+    "accName": "Alexis",
+    "netBalance": 751,
     "spendingTracker": {
-        "totalSpending": 600,
-        "spendingList": [
-            {
-                "itemName": "Amazon",
-                "itemValue": 100
-            },
-            {
-                "itemName": "Uber",
-                "itemValue": 200
-            },
-            {
-                "itemName": "PS5",
-                "itemValue": 300
-            }
-        ],
-        "maxPurchaseIndex": 2
+        "totalSpending": 0,
+        "spendingList": [{
+            "itemName": "Amazon",
+            "itemValue": 49
+        }],
+        "maxPurchaseIndex": -1
     }
 }
