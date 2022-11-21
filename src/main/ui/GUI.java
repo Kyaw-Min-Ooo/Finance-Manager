@@ -1,9 +1,9 @@
 package ui;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+
 
 
 public class GUI extends JFrame implements ActionListener {
@@ -30,18 +30,16 @@ public class GUI extends JFrame implements ActionListener {
         button = new JButton("Done");
 
         button.addActionListener(this);
+        welcome.setFont(new Font("Arial", Font.PLAIN, 19));
+        askName.setFont(new Font("Arial", Font.PLAIN, 18));
 
         panel =  new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(250, 250, 250, 250));
+        panel.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
         panel.setLayout(new GridLayout(0, 1));
-
         panel.add(welcome);
         panel.add(askName);
         panel.add(field);
         panel.add(button);
-
-//        Border border =  BorderFactory.createCompoundBorder();
-//        panel.setBorder(border);
 
         openFrame(panel);
     }
@@ -50,10 +48,11 @@ public class GUI extends JFrame implements ActionListener {
     public void openFrame(JPanel panel) {
         // set up the frame and display it
         add(panel, BorderLayout.CENTER);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        setResizable(true);
     }
 
 

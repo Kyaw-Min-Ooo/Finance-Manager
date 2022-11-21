@@ -242,7 +242,7 @@ public class BankApp {
 
     // EFFECTS: saves the BankAccount to file
     // Code credit to Thingy example project
-    private void saveBankAccount() {
+    public void saveBankAccount() {
         try {
             jsonWriter.open();
             jsonWriter.write(this.bank);
@@ -256,7 +256,7 @@ public class BankApp {
     // MODIFIES: this
     // EFFECTS: loads BankAccount from file
     // Code credit to Thingy example project
-    private void loadBankAccount() {
+    public void loadBankAccount() {
         try {
             this.bank = jsonReader.read();
             System.out.println("Loaded " + this.bank.getAccName() + " from " + JSON_STORE);

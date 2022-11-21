@@ -1,17 +1,14 @@
 {
-    "balance": 951,
+    "balance": 400,
     "financeGoals": {
-        "savingAmount": 200,
+        "savingAmount": 250,
         "isSaving": true
     },
-    "accName": "Alexis",
-    "netBalance": 751,
+    "accName": "Alex",
+    "netBalance": 150,
     "spendingTracker": {
         "totalSpending": 0,
-        "spendingList": [{
-            "itemName": "Amazon",
-            "itemValue": 49
-        }],
+        "spendingList": [],
         "maxPurchaseIndex": -1
     }
 }
