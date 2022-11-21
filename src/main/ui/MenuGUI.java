@@ -11,8 +11,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class MenuGUI extends JFrame implements ListSelectionListener, ActionListener {
-    private BankApp uiBank;
+
+// This class serves as a large code base for all the GUI implementations for Phase 3
+public class MenuGUI extends JFrame implements ListSelectionListener {
+    private BankApp uiBank; // Allow changes to BankAccount object through associations
 
     // Listeners for button actions
     ActionListener depositListener = null;
@@ -22,12 +24,11 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
     // All the components for Bank information panel
     private JLabel heading;
     private JLabel bankBalance;
-    private JLabel finGoals;
     private JLabel netBalance;
     private JLabel spendTracker;
     private JLabel savingGoals;
 
-    // All the major Swing Components used for the whole menu
+    // All the major Swing Components used for the whole menu split panels
     private JSplitPane menuSplitPane;
     private JTextField field;
     private JSplitPane bankInfoAndCurPanel;
@@ -45,12 +46,17 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
             "Quit"
     };
 
+    //Requires: BankApp reference
+    //Modifies: this
+    //Effects: Store BankApp reference, set frame title to username, and run the GUI program
     public MenuGUI(BankApp uiBank) {
         super(uiBank.getBank().getAccName() + "'s " + "Finance Manager");
         this.uiBank = uiBank;
         run();
     }
 
+    //Modifies: this
+    //Effects: Design and populate the split panels with appropriate format
     public void run() {
         //Design the panels
         bankMenuList = new JList(menuOptions);
@@ -84,62 +90,81 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         setResizable(false);
     }
 
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    //Effects: Set up actions listeners for each button in the GUI
     public void setUpListeners() {
         depositListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double amount = Double.parseDouble(field.getText());
-
-                if (amount >= 0.0) {
-                    uiBank.getBank().deposit(amount);
-                    uiBank.getBank().updateNetBalance(amount);
-                } else {
-                    System.out.println("Cannot deposit negative amount...\n");
-                }
-
-                updateBankInfo();
+                deposit(amount);
             }
         };
         withdrawListener =  new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double amount = Double.parseDouble(field.getText());
-
-                if (amount < 0.0) {
-                    System.out.println("Cannot withdraw negative amount...\n");
-                } else if (uiBank.getBank().getBalance() < amount) {
-                    System.out.println("Insufficient balance on account...\n");
-                } else {
-                    uiBank.getBank().withdraw(amount);
-                    uiBank.getBank().updateNetBalance(-1 * amount);
-                }
-
-                updateBankInfo();
+                withdraw(amount);
             }
         };
         savingListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 double savingsAmount = Double.parseDouble(field.getText());
-                boolean validSavings = uiBank.getBank().getBalance() > savingsAmount;
-
-                if (validSavings && uiBank.getBank().getBalance() != 0) {
-                    uiBank.getBank().getMyFinGoals().setSavingAmount(savingsAmount);
-                    uiBank.getBank().setNetBalance(
-                            uiBank.getBank().getBalance() - uiBank.getBank().getMyFinGoals().getSavingAmount()
-                    );
-                    uiBank.getBank().getMyFinGoals().setIsSaving(true);
-                } else {
-                    System.out.println("Invalid saving input! Please try again");
-                }
-
-                updateBankInfo();
+                save(savingsAmount);
             }
         };
     }
 
+    //Requires: non-negative double
+    //Modifies: this.bank
+    //Effects: deposit and update bank information based on text field input
+    private void deposit(Double amount) {
+        if (amount >= 0.0) {
+            uiBank.getBank().deposit(amount);
+            uiBank.getBank().updateNetBalance(amount);
+        } else {
+            System.out.println("Cannot deposit negative amount...\n");
+        }
 
+        updateBankInfo();
+    }
+
+    //Requires: non-negative double
+    //Modifies: this.bank
+    //Effects: withdraw and update bank formation based on the text field input
+    private void withdraw(Double amount) {
+        if (amount < 0.0) {
+            System.out.println("Cannot withdraw negative amount...\n");
+        } else if (uiBank.getBank().getBalance() < amount) {
+            System.out.println("Insufficient balance on account...\n");
+        } else {
+            uiBank.getBank().withdraw(amount);
+            uiBank.getBank().updateNetBalance(-1 * amount);
+        }
+        updateBankInfo();
+    }
+
+    //Requires: savingAmount greater than bank's current balance
+    //Modifies: this.bank
+    //Effects:  set saving amount, adjust net balance and update bank info based the text field input
+    private void save(Double savingsAmount) {
+        boolean validSavings = uiBank.getBank().getBalance() > savingsAmount;
+
+        if (validSavings && uiBank.getBank().getBalance() != 0) {
+            uiBank.getBank().getMyFinGoals().setSavingAmount(savingsAmount);
+            uiBank.getBank().setNetBalance(
+                    uiBank.getBank().getBalance() - uiBank.getBank().getMyFinGoals().getSavingAmount()
+            );
+            uiBank.getBank().getMyFinGoals().setIsSaving(true);
+        } else {
+            System.out.println("Invalid saving input! Please try again");
+        }
+
+        updateBankInfo();
+    }
+
+    //Modifies: this
+    //Effects: initialize and populate the bank info panel showing major bank data
     private void buildBankInfo() {
         heading = new JLabel(uiBank.getBank().getAccName() + "'s Bank Info:");
         bankBalance = new JLabel("Current Balance: $" + uiBank.getBank().getBalance());
@@ -158,6 +183,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         bankInfo.add(spendTracker);
     }
 
+    //Effects: update the bank info panel based on new information from the BankAccount object
     public void updateBankInfo() {
         heading.setText(uiBank.getBank().getAccName() + "'s Bank Info:");
         bankBalance.setText("Current Balance: $" + uiBank.getBank().getBalance());
@@ -166,9 +192,11 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         spendTracker.setText("Total spending: $ " + uiBank.getBank().getMySpendingTracker().getTotalSpending());
     }
 
-
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     @Override
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    //Requires: select option from side menu
+    //Modifies: this
+    //Effects:  execute the respective action based on user selection
     public void valueChanged(ListSelectionEvent e) {
         String options = (String) bankMenuList.getSelectedValue();
 
@@ -205,11 +233,13 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         }
     }
 
+    //Effects: Refresh the panel so past panel's attributes don't persist
     public void refresh() {
         currPanel.removeAll();
         currPanel.repaint();
     }
 
+    //Effects:  Construct the prompt asking for the amount to save
     private void setSavingAmt() {
         field = new JTextField(15);
         JLabel askName = new JLabel("How much do you intend to save?", SwingConstants.CENTER);
@@ -223,7 +253,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         button.addActionListener(savingListener);
     }
 
-
+    //Effects: Construct the prompt asking user for the amount to withdraw
     private void doWithdrawal() {
         field = new JTextField(15);
         JLabel askName = new JLabel("How much do you want to withdraw?", SwingConstants.CENTER);
@@ -237,6 +267,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         button.addActionListener(withdrawListener);
     }
 
+    //Effects: Construct the prompt asking user for the amount to deposit
     private void deDeposit() {
 
         field = new JTextField(15);
@@ -252,6 +283,8 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
 
     }
 
+    //Modifies: this.bank's JSON file
+    //Effects: save current BankAccount's status and refresh the bank info panel
     private void saveFile() {
         try {
             uiBank.saveBankAccount();
@@ -273,6 +306,9 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         }
     }
 
+    //Requires: this.bank's JSON file
+    //Modifies: this.bank
+    //Effects:  populate this.bank based on saved JSON file and refresh the bank info panel
     private void loadFile() {
         try {
             uiBank.loadBankAccount();
@@ -294,9 +330,4 @@ public class MenuGUI extends JFrame implements ListSelectionListener, ActionList
         }
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        uiBank.getBank().deposit(Double.parseDouble(field.getText()));
-        updateBankInfo();
-    }
 }

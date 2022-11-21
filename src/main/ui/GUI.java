@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-
+// This class serves as the welcome page to the GUI implemented in Phase 3
 public class GUI extends JFrame implements ActionListener {
     private BankApp uiBank;
 
@@ -16,13 +16,15 @@ public class GUI extends JFrame implements ActionListener {
     private JLabel welcome;
     private JButton button;
 
-    //Effects: Initialize GUI class with access to Bank App data
+    //Modifies: this
+    //Effects: Set title of frame and give access to BankApp ui data
     public GUI(BankApp uiBank) {
         super("Finance Manager");
         this.uiBank = uiBank;
     }
 
-    // Main tasks
+    //Modifies: this
+    //Effects: Populate the welcome page for the GUI asking for username
     public void run() {
         field = new JTextField(15);
         askName = new JLabel("What is your name?", SwingConstants.CENTER);
@@ -44,7 +46,9 @@ public class GUI extends JFrame implements ActionListener {
         openFrame(panel);
     }
 
-    // Construct all the GUI components
+    //Requires: designed JPanel
+    //Modifies: this
+    //Effects: add panel to the frame and format with appropriate size
     public void openFrame(JPanel panel) {
         // set up the frame and display it
         add(panel, BorderLayout.CENTER);
@@ -55,7 +59,9 @@ public class GUI extends JFrame implements ActionListener {
         setResizable(true);
     }
 
-
+    //Requires: mouse click
+    //Modifies: this
+    //Effects: Take username, store it and move onto menu panel
     @Override
     public void actionPerformed(ActionEvent e) {
         uiBank.getBank().setAccName(field.getText());
