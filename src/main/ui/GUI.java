@@ -38,6 +38,7 @@ public class GUI extends JFrame implements ActionListener {
         panel =  new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(150, 150, 150, 150));
         panel.setLayout(new GridLayout(0, 1));
+        panel.setBackground(Color.decode("#ecf0f1"));
         panel.add(welcome);
         panel.add(askName);
         panel.add(field);

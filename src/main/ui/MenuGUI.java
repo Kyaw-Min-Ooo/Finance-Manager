@@ -61,9 +61,10 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         //Design the panels
         bankMenuList = new JList(menuOptions);
         bankMenuList.addListSelectionListener(this);
+        bankMenuList.setBackground(Color.decode("#ecf0f1"));
 
         currPanel =  new JPanel();
-        currPanel.setBackground(Color.WHITE);
+        currPanel.setBackground(Color.decode("#ecf0f1"));
         currPanel.setSize(new Dimension(200,200));
         currPanel.setLayout(new GridLayout(0, 1));
 
@@ -73,8 +74,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         bankInfoAndCurPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,currPanel,bankInfo);
         bankInfoAndCurPanel.setDividerLocation(250);
 
-        menuSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                new JScrollPane(bankMenuList),
+        menuSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(bankMenuList),
                 new JScrollPane(bankInfoAndCurPanel)
         );
         menuSplitPane.setDividerLocation(300);
@@ -181,6 +181,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         bankInfo.add(netBalance);
         bankInfo.add(savingGoals,BorderLayout.AFTER_LAST_LINE);
         bankInfo.add(spendTracker);
+        setBackground(Color.decode("#ecf0f1"));
     }
 
     //Effects: update the bank info panel based on new information from the BankAccount object
@@ -248,8 +249,9 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         currPanel.add(askName);
         currPanel.add(field);
         currPanel.add(button);
-        revalidate();
+        currPanel.setBorder(BorderFactory.createEmptyBorder(80,80,80,80));
 
+        revalidate();
         button.addActionListener(savingListener);
     }
 
@@ -262,8 +264,9 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         currPanel.add(askName);
         currPanel.add(field);
         currPanel.add(button);
-        revalidate();
+        currPanel.setBorder(BorderFactory.createEmptyBorder(80,80,80,80));
 
+        revalidate();
         button.addActionListener(withdrawListener);
     }
 
@@ -277,10 +280,11 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         currPanel.add(askName);
         currPanel.add(field);
         currPanel.add(button);
+        currPanel.setBorder(BorderFactory.createEmptyBorder(80,80,80,80));
+
         revalidate();
 
         button.addActionListener(depositListener);
-
     }
 
     //Modifies: this.bank's JSON file
@@ -294,7 +298,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
             JLabel picLabel = new JLabel(new ImageIcon(image));
 
             currPanel.add(picLabel);
-            currPanel.setBackground(Color.GREEN);
+            currPanel.setBackground(Color.decode("#7DEC96"));
 
             revalidate();
         } catch (IOException ex) {
@@ -318,7 +322,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
             Image image = myPicture.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
             JLabel picLabel = new JLabel(new ImageIcon(image));
             currPanel.add(picLabel);
-            currPanel.setBackground(Color.GREEN);
+            currPanel.setBackground(Color.decode("#7DEC96"));
 
             revalidate();
         } catch (IOException ex) {

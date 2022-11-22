@@ -1,11 +1,11 @@
 {
-    "balance": 5877,
+    "balance": 137,
     "financeGoals": {
-        "savingAmount": 1231,
+        "savingAmount": 120,
         "isSaving": true
     },
     "accName": "Alex",
-    "netBalance": 4646,
+    "netBalance": 17,
     "spendingTracker": {
         "totalSpending": 0,
         "spendingList": [],
