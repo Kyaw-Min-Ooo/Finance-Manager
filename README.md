@@ -30,6 +30,8 @@ This feature will **track** your purchases for the month give **a visualized sum
 
 - You can generate the first required event related to adding Xs to a Y by entering username and selecting deposit option from left menu. Then, enter amount and click ok.
 - You can generate the second required event related to adding Xs to a Y by entering username and selecting set saving goals from left menu. Then, enter amount and click ok.
+- You can generate a more 'apparent' event related to adding Xs to a Y by choosing "Make a purchase" then inputting item name in the first field and item price in the second field.
 - You can locate my visual component by either saving or loading menu. If successful, the top panel should try green; otherwise, it should be red to show file exception.
+- Another major visual component when you add a purchase, it is added to the spending list in the right bottom panel. 
 - You can save the state of my application by selecting save file on left menu after entering username.
 - You can reload the state of my application by selecting load file on left menu after entering username

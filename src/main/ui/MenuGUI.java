@@ -133,7 +133,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
             double savingsAmount = Double.parseDouble(field.getText());
             save(savingsAmount);
         };
-        setUpListenersPurchase();
+        setUpListenersPurchase(); // Continue ActionListeners setup in another method due to checkstyle
     }
 
     //Effects: Set up actions listeners for making purchases in the GUI
@@ -157,7 +157,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         } else {
             uiBank.getBank().withdraw(itemPrice);
             uiBank.getBank().updateNetBalance(-1 * itemPrice);
-            uiBank.getBank().getMySpendingList().add(new Purchase(itemName,itemPrice));
+            uiBank.getBank().getMySpendingList().add(new Purchase(itemName,itemPrice)); // Adding X to Y
 
             System.out.println("Purchase successful!");
             int itemIndex = uiBank.getBank().getMySpendingTracker().searchItem(itemName);
@@ -221,7 +221,6 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         } else {
             System.out.println("Invalid saving input! Please try again");
         }
-
         updateBankInfo();
     }
 
@@ -235,44 +234,41 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
     }
 
     @Override
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     //Requires: select option from side menu
     //Modifies: this
     //Effects:  execute the respective action based on user selection
     public void valueChanged(ListSelectionEvent e) {
-        // To ensure it does not get called twice
+        // While loop condition to ensure it does not get called twice
         if (!e.getValueIsAdjusting()) {
-            String options = (String) bankMenuList.getSelectedValue();
+            refresh();
+            doTask((String) bankMenuList.getSelectedValue());
+        }
+    }
 
-            switch (options) {
-                case "Deposit" :
-                    refresh();
-                    deDeposit();
-                    break;
-                case "Withdraw" :
-                    refresh();
-                    doWithdrawal();
-                    break;
-                case "Make Purchase" :
-                    refresh();
-                    makePurchase();
-                    break;
-                case "Set saving goals" :
-                    refresh();
-                    setSavingAmt();
-                    break;
-                case "Save bank account to file" :
-                    refresh();
-                    saveFile();
-                    break;
-                case "Load bank account from file" :
-                    refresh();
-                    loadFile();
-                    break;
-                case "Quit" :
-                    this.dispose();
-                    break;
-            }
+    // Effects: Act as the selector for the menu options
+    public void doTask(String options) {
+        switch (options) {
+            case "Deposit" :
+                deDeposit();
+                break;
+            case "Withdraw" :
+                doWithdrawal();
+                break;
+            case "Make Purchase" :
+                makePurchase();
+                break;
+            case "Set saving goals" :
+                setSavingAmt();
+                break;
+            case "Save bank account to file" :
+                saveFile();
+                break;
+            case "Load bank account from file" :
+                loadFile();
+                break;
+            case "Quit" :
+                this.dispose();
+                break;
         }
     }
 
@@ -325,10 +321,10 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         currPanel.setBorder(BorderFactory.createEmptyBorder(80,80,80,80));
 
         revalidate();
-
         button.addActionListener(depositListener);
     }
 
+    //Modifies: this.bank
     // Effects: Get user input from JText and display on bank info panel
     private void makePurchase() {
         field = new JTextField(15);
@@ -346,7 +342,6 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         currPanel.setBorder(BorderFactory.createEmptyBorder(80,80,80,80));
 
         revalidate();
-
         button.addActionListener(purchaseListener);
     }
 
@@ -365,10 +360,8 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
 
             revalidate();
         } catch (IOException ex) {
-            JLabel sorry = new JLabel("Sorry file could not be open");
-            currPanel.add(sorry);
+            currPanel.add(new JLabel("Sorry file could not be open"));
             currPanel.setBackground(Color.RED);
-
             revalidate();
         }
     }
@@ -388,14 +381,16 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
             currPanel.add(picLabel);
             currPanel.setBackground(Color.decode("#7DEC96"));
 
+            revalidate();
         } catch (IOException ex) {
-            JLabel sorry = new JLabel("Sorry file could not be open");
-            currPanel.add(sorry);
+            currPanel.add(new JLabel("Sorry file could not be open"));
             currPanel.setBackground(Color.RED);
             revalidate();
         }
     }
 
+    // Modifies; this (GUI)
+    // Effects: Populate the Bank Info panel with the items in this,bank's spending list
     private void populateSpendingList() {
         for (Purchase item: uiBank.getBank().getMySpendingList()) {
             bankInfo.add(new JLabel(item.itemName()));

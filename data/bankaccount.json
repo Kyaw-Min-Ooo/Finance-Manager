@@ -1,13 +1,13 @@
 {
-    "balance": 900,
+    "balance": 1140,
     "financeGoals": {
         "savingAmount": 400,
         "isSaving": true
     },
     "accName": "asd",
-    "netBalance": 500,
+    "netBalance": 740,
     "spendingTracker": {
-        "totalSpending": 123,
+        "totalSpending": 213,
         "spendingList": [
             {
                 "itemName": "Amaozn ",
@@ -20,6 +20,10 @@
             {
                 "itemName": "H&M",
                 "itemValue": 100
+            },
+            {
+                "itemName": "Zara",
+                "itemValue": 90
             }
         ],
         "maxPurchaseIndex": -1
