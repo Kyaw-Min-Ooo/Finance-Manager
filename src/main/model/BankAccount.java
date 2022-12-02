@@ -27,7 +27,7 @@ public class BankAccount implements Writable {
     //Requires: accName has non-zero length
     //Modifies: this
     //Effects: Checks if balance is zero or under. Yes --> Set balance and net balance to zero
-    // otherwise,add the balance amount and initialize spening tracker and financial goals
+    // otherwise,add the balance amount and initialize spending tracker and financial goals
     public BankAccount(String accName, double balance) {
         this.accName = accName;
         if (balance <= 0) {

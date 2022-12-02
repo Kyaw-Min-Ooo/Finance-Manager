@@ -1,14 +1,27 @@
 {
-    "balance": 137,
+    "balance": 900,
     "financeGoals": {
-        "savingAmount": 120,
+        "savingAmount": 400,
         "isSaving": true
     },
-    "accName": "Alex",
-    "netBalance": 17,
+    "accName": "asd",
+    "netBalance": 500,
     "spendingTracker": {
-        "totalSpending": 0,
-        "spendingList": [],
+        "totalSpending": 123,
+        "spendingList": [
+            {
+                "itemName": "Amaozn ",
+                "itemValue": 3
+            },
+            {
+                "itemName": "Uber",
+                "itemValue": 20
+            },
+            {
+                "itemName": "H&M",
+                "itemValue": 100
+            }
+        ],
         "maxPurchaseIndex": -1
     }
 }

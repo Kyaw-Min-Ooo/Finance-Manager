@@ -1,11 +1,12 @@
 package ui;
 
+import model.Purchase;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -20,6 +21,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
     ActionListener depositListener = null;
     ActionListener withdrawListener = null;
     ActionListener savingListener =  null;
+    ActionListener purchaseListener = null;
 
     // All the components for Bank information panel
     private JLabel heading;
@@ -27,10 +29,12 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
     private JLabel netBalance;
     private JLabel spendTracker;
     private JLabel savingGoals;
+    private JLabel spendingList;
 
     // All the major Swing Components used for the whole menu split panels
     private JSplitPane menuSplitPane;
     private JTextField field;
+    private JTextField fieldPrice;
     private JSplitPane bankInfoAndCurPanel;
     private JList bankMenuList;
     private JPanel currPanel;
@@ -40,7 +44,6 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
             "Withdraw",
             "Make Purchase",
             "Set saving goals",
-            "Print the statistics of all your spending",
             "Load bank account from file",
             "Save bank account to file",
             "Quit"
@@ -71,11 +74,11 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         bankInfo = new JPanel();
         buildBankInfo();
 
-        bankInfoAndCurPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,currPanel,bankInfo);
+        bankInfoAndCurPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,currPanel,new JScrollPane(bankInfo));
         bankInfoAndCurPanel.setDividerLocation(250);
 
         menuSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(bankMenuList),
-                new JScrollPane(bankInfoAndCurPanel)
+                bankInfoAndCurPanel
         );
         menuSplitPane.setDividerLocation(300);
 
@@ -90,30 +93,90 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         setResizable(false);
     }
 
-    //Effects: Set up actions listeners for each button in the GUI
+    //Modifies: this
+    //Effects: initialize and populate the bank info panel showing major bank data
+    private void buildBankInfo() {
+        heading = new JLabel(uiBank.getBank().getAccName() + "'s Bank Info:");
+        bankBalance = new JLabel("Current Balance: $" + uiBank.getBank().getBalance());
+        netBalance = new JLabel("Spendable Balance: $" + uiBank.getBank().getBalance());
+        savingGoals = new JLabel("Current Saving Goal: $" + uiBank.getBank().getMyFinGoals().getSavingAmount());
+        spendTracker = new JLabel("Total spending: $ " + uiBank.getBank().getMySpendingTracker().getTotalSpending());
+        spendingList = new JLabel("List of purchases: ");
+
+        GridLayout layout = new GridLayout(0,1);
+        bankInfo.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+
+        bankInfo.setLayout(layout);
+        bankInfo.add(heading, BorderLayout.CENTER);
+        bankInfo.add(new JLabel("------------------"));
+        bankInfo.add(bankBalance);
+        bankInfo.add(netBalance);
+        bankInfo.add(savingGoals,BorderLayout.AFTER_LAST_LINE);
+        bankInfo.add(spendTracker);
+        bankInfo.add(new JLabel("------------------"));
+        bankInfo.add(spendingList);
+        bankInfo.add(new JLabel("------------------"));
+        setBackground(Color.decode("#ecf0f1"));
+    }
+
+    //Effects: Set up actions listeners for withdraw, deposit, and saving goal in the GUI
     public void setUpListeners() {
-        depositListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double amount = Double.parseDouble(field.getText());
-                deposit(amount);
-            }
+        depositListener = e -> {
+            double amount = Double.parseDouble(field.getText());
+            deposit(amount);
         };
-        withdrawListener =  new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double amount = Double.parseDouble(field.getText());
-                withdraw(amount);
-            }
+        withdrawListener = e -> {
+            double amount = Double.parseDouble(field.getText());
+            withdraw(amount);
         };
-        savingListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double savingsAmount = Double.parseDouble(field.getText());
-                save(savingsAmount);
-            }
+        savingListener = e -> {
+            double savingsAmount = Double.parseDouble(field.getText());
+            save(savingsAmount);
+        };
+        setUpListenersPurchase();
+    }
+
+    //Effects: Set up actions listeners for making purchases in the GUI
+    public void setUpListenersPurchase() {
+        purchaseListener = e -> {
+            String itemName = field.getText();
+            double itemPrice = Double.parseDouble(fieldPrice.getText());
+            addPurchase(itemName,itemPrice);
         };
     }
+
+    //Requires: non-negative double and non-zero itemName
+    //Modifies: this.bank
+    //Effects: add a purchase item to the list of items
+    private void addPurchase(String itemName, double itemPrice) {
+        if (uiBank.getBank().getNetBalance() < itemPrice || uiBank.getBank().getBalance() < itemPrice) {
+            System.out.println("Not enough balance!");
+            if (uiBank.getBank().getNetBalance() < itemPrice && uiBank.getBank().getMyFinGoals().getIsSaving()) {
+                System.out.println("Purchase goes against saving quota!");
+            }
+        } else {
+            uiBank.getBank().withdraw(itemPrice);
+            uiBank.getBank().updateNetBalance(-1 * itemPrice);
+            uiBank.getBank().getMySpendingList().add(new Purchase(itemName,itemPrice));
+
+            System.out.println("Purchase successful!");
+            int itemIndex = uiBank.getBank().getMySpendingTracker().searchItem(itemName);
+            System.out.println(uiBank.getBank().getMySpendingList().get(itemIndex).displayTransaction());
+            uiBank.displayOverallBalance(); // Overall Display
+            updateBankInfo();
+            addPurchaseInPanel();
+        }
+    }
+
+    //Effects: Display the new purchase item in the bank info panel
+    private void addPurchaseInPanel() {
+        int lastItem = uiBank.getBank().getMySpendingList().size() - 1;
+        bankInfo.add(new JLabel(uiBank.getBank().getMySpendingList().get(lastItem).itemName()));
+        bankInfo.add(new JLabel(String.valueOf(uiBank.getBank().getMySpendingList().get(lastItem).value())));
+        bankInfo.add(new JLabel("   "));
+        updateBankInfo();
+    }
+
 
     //Requires: non-negative double
     //Modifies: this.bank
@@ -125,7 +188,6 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         } else {
             System.out.println("Cannot deposit negative amount...\n");
         }
-
         updateBankInfo();
     }
 
@@ -163,27 +225,6 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         updateBankInfo();
     }
 
-    //Modifies: this
-    //Effects: initialize and populate the bank info panel showing major bank data
-    private void buildBankInfo() {
-        heading = new JLabel(uiBank.getBank().getAccName() + "'s Bank Info:");
-        bankBalance = new JLabel("Current Balance: $" + uiBank.getBank().getBalance());
-        netBalance = new JLabel("Spendable Balance: $" + uiBank.getBank().getBalance());
-        savingGoals = new JLabel("Current Saving Goal: $" + uiBank.getBank().getMyFinGoals().getSavingAmount());
-        spendTracker = new JLabel("Total spending: $ " + uiBank.getBank().getMySpendingTracker().getTotalSpending());
-
-        GridLayout layout = new GridLayout(0,1);
-        bankInfo.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-
-        bankInfo.setLayout(layout);
-        bankInfo.add(heading, BorderLayout.CENTER);
-        bankInfo.add(bankBalance);
-        bankInfo.add(netBalance);
-        bankInfo.add(savingGoals,BorderLayout.AFTER_LAST_LINE);
-        bankInfo.add(spendTracker);
-        setBackground(Color.decode("#ecf0f1"));
-    }
-
     //Effects: update the bank info panel based on new information from the BankAccount object
     public void updateBankInfo() {
         heading.setText(uiBank.getBank().getAccName() + "'s Bank Info:");
@@ -199,38 +240,39 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
     //Modifies: this
     //Effects:  execute the respective action based on user selection
     public void valueChanged(ListSelectionEvent e) {
-        String options = (String) bankMenuList.getSelectedValue();
+        // To ensure it does not get called twice
+        if (!e.getValueIsAdjusting()) {
+            String options = (String) bankMenuList.getSelectedValue();
 
-        switch (options) {
-            case "Deposit" :
-                refresh();
-                deDeposit();
-                break;
-            case "Withdraw" :
-                refresh();
-                doWithdrawal();
-                break;
-            case "Make Purchase" :
-            case "Print the statistics of all your spending" :
-                refresh();
-                // TODO: Future changes
-                currPanel.setBackground(Color.white);
-                break;
-            case "Set saving goals" :
-                refresh();
-                setSavingAmt();
-                break;
-            case "Save bank account to file" :
-                refresh();
-                saveFile();
-                break;
-            case "Load bank account from file" :
-                refresh();
-                loadFile();
-                break;
-            case "Quit" :
-                this.dispose();
-                break;
+            switch (options) {
+                case "Deposit" :
+                    refresh();
+                    deDeposit();
+                    break;
+                case "Withdraw" :
+                    refresh();
+                    doWithdrawal();
+                    break;
+                case "Make Purchase" :
+                    refresh();
+                    makePurchase();
+                    break;
+                case "Set saving goals" :
+                    refresh();
+                    setSavingAmt();
+                    break;
+                case "Save bank account to file" :
+                    refresh();
+                    saveFile();
+                    break;
+                case "Load bank account from file" :
+                    refresh();
+                    loadFile();
+                    break;
+                case "Quit" :
+                    this.dispose();
+                    break;
+            }
         }
     }
 
@@ -287,6 +329,27 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         button.addActionListener(depositListener);
     }
 
+    // Effects: Get user input from JText and display on bank info panel
+    private void makePurchase() {
+        field = new JTextField(15);
+        fieldPrice =  new JTextField(15);
+        JLabel askItemName = new JLabel("What is the name of your purchase?", SwingConstants.CENTER);
+        JLabel askItemPrice = new JLabel("What is the price of your purchase?", SwingConstants.CENTER);
+        JButton button = new JButton("Done");
+
+
+        currPanel.add(askItemName);
+        currPanel.add(askItemPrice);
+        currPanel.add(field);
+        currPanel.add(fieldPrice);
+        currPanel.add(button);
+        currPanel.setBorder(BorderFactory.createEmptyBorder(80,80,80,80));
+
+        revalidate();
+
+        button.addActionListener(purchaseListener);
+    }
+
     //Modifies: this.bank's JSON file
     //Effects: save current BankAccount's status and refresh the bank info panel
     private void saveFile() {
@@ -317,6 +380,7 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         try {
             uiBank.loadBankAccount();
             updateBankInfo();
+            populateSpendingList();
 
             BufferedImage myPicture = ImageIO.read(new File("./data/success.png"));
             Image image = myPicture.getScaledInstance(50, 50, Image.SCALE_DEFAULT);
@@ -324,14 +388,19 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
             currPanel.add(picLabel);
             currPanel.setBackground(Color.decode("#7DEC96"));
 
-            revalidate();
         } catch (IOException ex) {
             JLabel sorry = new JLabel("Sorry file could not be open");
             currPanel.add(sorry);
             currPanel.setBackground(Color.RED);
-
             revalidate();
         }
     }
 
+    private void populateSpendingList() {
+        for (Purchase item: uiBank.getBank().getMySpendingList()) {
+            bankInfo.add(new JLabel(item.itemName()));
+            bankInfo.add(new JLabel(String.valueOf(item.value())));
+            bankInfo.add(new JLabel("   "));
+        }
+    }
 }
