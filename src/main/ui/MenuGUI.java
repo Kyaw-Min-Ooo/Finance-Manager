@@ -1,13 +1,16 @@
 package ui;
 
+import model.Event;
+import model.EventLog;
 import model.Purchase;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -77,12 +80,19 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         bankInfoAndCurPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT,currPanel,new JScrollPane(bankInfo));
         bankInfoAndCurPanel.setDividerLocation(250);
 
-        menuSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new JScrollPane(bankMenuList),
+        menuSplitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                new JScrollPane(bankMenuList),
                 bankInfoAndCurPanel
         );
         menuSplitPane.setDividerLocation(300);
 
-        // Add and set up the frame
+        buildFrame(); // Compile and build all the frame
+    }
+
+    // Modifies: this.frame
+    // Effects: Add panels and set up the frame format
+    public void buildFrame() {
         add(menuSplitPane);
         setUpListeners();
         setMinimumSize(new Dimension(800,500));
@@ -136,13 +146,22 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
         setUpListenersPurchase(); // Continue ActionListeners setup in another method due to checkstyle
     }
 
-    //Effects: Set up actions listeners for making purchases in the GUI
+    //Effects: Set up actions listeners for making purchases in the GUI + exiting and logging all events
     public void setUpListenersPurchase() {
         purchaseListener = e -> {
             String itemName = field.getText();
             double itemPrice = Double.parseDouble(fieldPrice.getText());
             addPurchase(itemName,itemPrice);
         };
+
+        // Ensures all the event logs are also printed on pressing red exit button
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                printAllLog();
+            }
+        }
+        );
     }
 
     //Requires: non-negative double and non-zero itemName
@@ -267,9 +286,19 @@ public class MenuGUI extends JFrame implements ListSelectionListener {
                 loadFile();
                 break;
             case "Quit" :
+                printAllLog();
                 this.dispose();
-                break;
         }
+    }
+
+    // Effects: Print all event logs
+    private void printAllLog() {
+        System.out.println("\n----------------------------------");
+        System.out.println("Printing all event logs...");
+        for (Event next: EventLog.getInstance()) {
+            System.out.println("\n" + next.toString());
+        }
+        System.out.println("----------------------------------");
     }
 
     //Effects: Refresh the panel so past panel's attributes don't persist

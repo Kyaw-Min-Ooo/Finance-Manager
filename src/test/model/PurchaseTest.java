@@ -32,5 +32,4 @@ public class PurchaseTest {
         assertEquals(45.0,testFinGoalJson.get("itemValue"));
     }
 
-
 }

@@ -1,29 +1,21 @@
 {
-    "balance": 1140,
+    "balance": 450,
     "financeGoals": {
-        "savingAmount": 400,
+        "savingAmount": 250,
         "isSaving": true
     },
-    "accName": "asd",
-    "netBalance": 740,
+    "accName": "Alex",
+    "netBalance": 200,
     "spendingTracker": {
-        "totalSpending": 213,
+        "totalSpending": 350,
         "spendingList": [
             {
-                "itemName": "Amaozn ",
-                "itemValue": 3
+                "itemName": "Amazon",
+                "itemValue": 300
             },
             {
-                "itemName": "Uber",
-                "itemValue": 20
-            },
-            {
-                "itemName": "H&M",
-                "itemValue": 100
-            },
-            {
-                "itemName": "Zara",
-                "itemValue": 90
+                "itemName": "Uber ",
+                "itemValue": 50
             }
         ],
         "maxPurchaseIndex": -1

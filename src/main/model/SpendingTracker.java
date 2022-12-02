@@ -84,10 +84,10 @@ public class SpendingTracker implements Writable {
     // EFFECTS: returns list of purchases in the spending list as a JSON array
     private JSONArray spendingListToJson() {
         JSONArray jsonArray = new JSONArray();
-
         for (Purchase item: this.spendingList) {
             jsonArray.put(item.toJson());
         }
         return jsonArray;
     }
+
 }

@@ -16,6 +16,7 @@ public class Purchase implements Writable {
     public Purchase(String itemName, double value) {
         this.itemName = itemName;
         this.value = value;
+        EventLog.getInstance().logEvent(new Event("A new purchase was made and added to list of spending!"));
     }
 
     public double value() {

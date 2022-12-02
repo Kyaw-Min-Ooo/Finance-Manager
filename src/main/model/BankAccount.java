@@ -2,7 +2,6 @@ package model;
 
 import org.json.JSONObject;
 import persistence.Writable;
-
 import java.util.ArrayList;
 
 // This BankAccount class stores the user's accName, balance and net balance (calculated with regard to saving goals).
@@ -100,6 +99,7 @@ public class BankAccount implements Writable {
     //Effects: Add the amount of purchase into account balance
     public double deposit(double depositAmount) {
         this.balance += depositAmount;
+        EventLog.getInstance().logEvent(new Event("Deposited $" + depositAmount + " into bank balance"));
         return this.balance; // returns the balance instead of amount deposit
     }
 
@@ -108,6 +108,7 @@ public class BankAccount implements Writable {
     //Effects: Subtract the amount of purchase from account's balance
     public double withdraw(double withdrawAmount) {
         this.balance -= withdrawAmount;
+        EventLog.getInstance().logEvent(new Event("Withdrawn $" + withdrawAmount + " from bank balance"));
         return this.balance; // returns the balance instead of amount withdrawn
     }
 

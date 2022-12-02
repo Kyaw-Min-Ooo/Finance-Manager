@@ -30,9 +30,15 @@ public class FinanceGoals implements Writable {
 
     public void setSavingAmount(double savingAmount) {
         this.savingAmount = savingAmount;
+        EventLog.getInstance().logEvent(new Event("Saving goal updated to: $" + savingAmount));
     }
 
     public void setIsSaving(Boolean isUserSaving) {
+        if (isUserSaving) {
+            EventLog.getInstance().logEvent(new Event("User has started saving!"));
+        } else {
+            EventLog.getInstance().logEvent(new Event("User has stopped saving!"));
+        }
         this.isSaving = isUserSaving;
     }
 
