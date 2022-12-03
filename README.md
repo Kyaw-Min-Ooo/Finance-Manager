@@ -26,11 +26,11 @@ This feature will **track** your purchases for the month give **a visualized sum
   my balance at the time of purchase.
 - As a user, when I start the application, I want to be given the option to load my previous spending data along with any saving goals.
 
-### Instructions for Grader:
+### Instructions for Grader: (Updated after Phase 3 grading)
 - You can generate the first required event related to adding Xs to a Y by choosing the make a purchase option on the menu after you deposit money in the bank. 
 - You can generate the second required event related to adding Xs to a Y by making another purchase with enough balance and observing the list of purchases made so far in right bottom panel. 
 - You can add other X to Ys by adding and updating the saving goals by choosing the third option in the menu. 
-- You can locate my visual component by either saving or loading menu. If successful, the top panel should try green; otherwise, it should be red to show file exception.
+- You can locate my visual component by either saving or loading menu. If successful, the top panel should display green; otherwise, it should be red with error message show file exception.
 - Another major visual component when you add a purchase, it is added to the spending list in the right bottom panel. 
 - You can save the state of my application by selecting save file on left menu after entering username.
 - You can reload the state of my application by selecting load file on left menu after entering username
