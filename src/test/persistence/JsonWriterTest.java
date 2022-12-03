@@ -5,10 +5,8 @@ import model.Purchase;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //Code credit to JsonWriter test approaches example from Thingy example
 public class JsonWriterTest extends JsonTest{

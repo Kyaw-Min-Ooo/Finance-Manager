@@ -2,6 +2,7 @@ package model;
 
 import org.json.JSONObject;
 import persistence.Writable;
+
 import java.util.ArrayList;
 
 // This BankAccount class stores the user's accName, balance and net balance (calculated with regard to saving goals).

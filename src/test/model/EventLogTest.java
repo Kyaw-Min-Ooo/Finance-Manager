@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventLogTest {
     BankAccount testAccount;
@@ -29,7 +29,6 @@ public class EventLogTest {
 
         //Total operations check
         assertTrue(l.size() == 1);
-        EventLog.getInstance().clear();
     }
 
     @Test
@@ -45,7 +44,6 @@ public class EventLogTest {
 
         //Total operations check
         assertTrue(l.size() == 2);
-        EventLog.getInstance().clear();
     }
 
     @Test
@@ -64,7 +62,6 @@ public class EventLogTest {
 
         //Total operations check
         assertTrue(l.size() == 2);
-        EventLog.getInstance().clear();
     }
 
     @Test
@@ -87,7 +84,6 @@ public class EventLogTest {
 
         //Total operations check
         assertTrue(l.size() == 3);
-        EventLog.getInstance().clear();
     }
 
     @Test
@@ -106,7 +102,6 @@ public class EventLogTest {
 
         //Total operations check
         assertTrue(l.size() == 2);
-        EventLog.getInstance().clear();
     }
 
 }

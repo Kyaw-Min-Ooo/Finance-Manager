@@ -1,12 +1,13 @@
 package ui;
 
+import model.BankAccount;
+import model.Purchase;
+import persistence.JsonReader;
+import persistence.JsonWriter;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
-import model.BankAccount;
-import model.*;
-import persistence.JsonReader;
-import persistence.JsonWriter;
 
 // Class credit to the TellerApp application example
 // This class serve as an application interface for operating different features included in the user stories

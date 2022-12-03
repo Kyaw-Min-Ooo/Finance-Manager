@@ -3,6 +3,7 @@ package ui;
 import model.Event;
 import model.EventLog;
 import model.Purchase;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

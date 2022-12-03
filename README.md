@@ -55,6 +55,7 @@ A new purchase was made and added to list of spending!
 Fri Dec 02 15:38:19 PST 2022
 Saving goal updated to: $250.0
 
+
 Fri Dec 02 15:38:19 PST 2022
 User has started saving!
 
@@ -65,3 +66,10 @@ Fri Dec 02 15:38:32 PST 2022
 A new purchase was made and added to list of spending!
 ----------------------------------
 ```
+
+### Phase 4: Task 3
+
+- The class diagram shows that there was good design for the most part of my program. 
+- However, since only one instance of BankApp is needed for the entire program yet it is frequently used in many cases. Hence, I would refactor to implement BankApp using Singleton design pattern. This way, the GUI, MenuGUI, JsonReader and JsonWriter class can get the shared single instance of BankApp easily.
+- I would also break down the MenuGUI class into different classes so it is maintained much easier. Currently, it has too much methods that are not cohesive enough and performed various tasks under the GUI class. 
+- So, with regards to the last thought, I would made an abstract class GUI with certain "frame" requirements and methods then make other classes implement it's respective frame. 
