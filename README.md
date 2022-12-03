@@ -70,6 +70,7 @@ A new purchase was made and added to list of spending!
 ### Phase 4: Task 3
 
 - The class diagram shows that there was good design for the most part of my program. 
-- However, since only one instance of BankApp is needed for the entire program yet it is frequently used in many cases. Hence, I would refactor to implement BankApp using Singleton design pattern. This way, the GUI, MenuGUI, JsonReader and JsonWriter class can get the shared single instance of BankApp easily.
+- However, since only one instance of BankApp is needed for the entire program but it is frequently used in many cases, especially the GUI. Hence, I would refactor to implement BankApp using Singleton design pattern. This way, the GUI, MenuGUI, JsonReader and JsonWriter class can get the shared single instance of BankApp easily.
 - I would also break down the MenuGUI class into different classes so it is maintained much easier. Currently, it has too much methods that are not cohesive enough and performed various tasks under the GUI class. 
-- So, with regards to the last thought, I would made an abstract class GUI with certain "frame" requirements and methods then make other classes implement it's respective frame. 
+- With regards to the last thought, I would make an abstract class GUI with certain "frame" requirements and methods then make other classes implement it's respective frame. 
+- With the last suggestion, this would connect the GUI and MenuGUI more naturally instead of being a bit more isolated like the current state.
