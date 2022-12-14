@@ -11,9 +11,6 @@ I personally splurge sometimes and tend to forget my goals so a program like thi
 
 This feature acts like your financial drill sergeant. Since our bank account balance _does not reflect_ what we can _actually_ afford, we need the Budget Sergeant to check our saving goals, budget limits, and monthly payments due (Netflix, utilities bill etc.) with regard to your monthly income to ensure you can _really_ afford the purchase. This ensures the user stay **within budget** and avoid **impulsive purchases** that go against their financial goals.
 
-#### Spending A.I
-
-This feature will **track** your purchases for the month give **a visualized summary** of the user spending pattern, **progress** towards financial goals, and provide some **insightful spending statistics** to help **review** your financial habits.
 
 
 ### Instructions for users:
