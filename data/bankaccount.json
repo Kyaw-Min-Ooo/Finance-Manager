@@ -1,21 +1,29 @@
 {
-    "balance": 450,
+    "balance": 10000,
     "financeGoals": {
-        "savingAmount": 250,
+        "savingAmount": 500,
         "isSaving": true
     },
-    "accName": "Alex",
-    "netBalance": 200,
+    "accName": "K2712",
+    "netBalance": 9500,
     "spendingTracker": {
-        "totalSpending": 350,
+        "totalSpending": 626000,
         "spendingList": [
             {
-                "itemName": "Amazon",
-                "itemValue": 300
+                "itemName": "House",
+                "itemValue": 90000
             },
             {
-                "itemName": "Uber ",
-                "itemValue": 50
+                "itemName": "Cat's Mansion",
+                "itemValue": 46000
+            },
+            {
+                "itemName": "One Piece",
+                "itemValue": 100000
+            },
+            {
+                "itemName": "Robbery",
+                "itemValue": 390000
             }
         ],
         "maxPurchaseIndex": -1
