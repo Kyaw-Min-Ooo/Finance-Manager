@@ -15,18 +15,8 @@ This feature acts like your financial drill sergeant. Since our bank account bal
 
 This feature will **track** your purchases for the month give **a visualized summary** of the user spending pattern, **progress** towards financial goals, and provide some **insightful spending statistics** to help **review** your financial habits.
 
-### User Stories:
 
-- As a user, I want to be able to record and store my income and purchases/withdraws to my bank account. (X to Y class)
-- As a user, I want to be able to add and store saving/budget goals to my goals list. (X to Y class)
-- As a user, I want to be able to view the budget left for spending after considering my goals.
-- As a user, I want to be able to make purchases and see if it goes against my goals.
-- As a user, I want to be able to see statistics on total spending, largest spent amount and see a visualized chart of my spending.
-- As a user, when I select the quit option from the application menu, I want the option to save the list of my spending data along with
-  my balance at the time of purchase.
-- As a user, when I start the application, I want to be given the option to load my previous spending data along with any saving goals.
-
-### Instructions for Grader: (Updated after Phase 3 grading)
+### Instructions for users:
 - You can generate the first required event related to adding Xs to a Y by choosing the make a purchase option on the menu after you deposit money in the bank. 
 - You can generate the second required event related to adding Xs to a Y by making another purchase with enough balance and observing the list of purchases made so far in right bottom panel. 
 - You can add other X to Ys by adding and updating the saving goals by choosing the third option in the menu. 
@@ -35,7 +25,7 @@ This feature will **track** your purchases for the month give **a visualized sum
 - You can save the state of my application by selecting save file on left menu after entering username.
 - You can reload the state of my application by selecting load file on left menu after entering username
 
-### Phase 4: Task 2
+### Example Logging Data:
 ```
 ----------------------------------
 Printing all event logs...
@@ -67,7 +57,7 @@ A new purchase was made and added to list of spending!
 ----------------------------------
 ```
 
-### Phase 4: Task 3
+### Future Design Improvements:
 
 - The class diagram shows that there was good design for the most part of my program. 
 - However, since only one instance of BankApp is needed for the entire program but it is frequently used in many cases, especially the GUI. Hence, I would refactor to implement BankApp using Singleton design pattern. This way, the GUI, MenuGUI, JsonReader and JsonWriter class can get the shared single instance of BankApp easily.
