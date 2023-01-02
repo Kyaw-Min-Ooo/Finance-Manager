@@ -1,4 +1,4 @@
-# Finance Manager 
+# Finance Tracker
 
 ## Program Description
 
